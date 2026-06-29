@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Invoice #{{invoiceNumber}}</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Invoice #{{invoiceNumber}} — amount due {{currency balance}} by {{dueDate}}.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f0f4f8;padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;" role="presentation">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#1a3a5c;padding:28px 40px;border-radius:8px 8px 0 0;">
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td style="vertical-align:top;">
+                    <p style="margin:0;color:#93c5fd;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">{{facilityName}}</p>
+                    <h1 style="margin:6px 0 0;color:#ffffff;font-size:22px;font-weight:700;">Invoice</h1>
+                  </td>
+                  <td style="vertical-align:top;text-align:right;">
+                    <p style="margin:0;color:#93c5fd;font-size:12px;font-weight:600;">#{{invoiceNumber}}</p>
+                    <p style="margin:4px 0 0;color:#bfdbfe;font-size:12px;">{{invoiceDate}}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:40px;">
+
+              <!-- Billing Info -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  <td width="50%" style="vertical-align:top;padding-right:20px;">
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#718096;">Billed To</p>
+                    <p style="margin:0;font-size:15px;font-weight:700;color:#1a202c;">{{patientName}}</p>
+                    <p style="margin:2px 0 0;font-size:13px;color:#718096;">Patient #{{patientNumber}}</p>
+                  </td>
+                  <td width="50%" style="vertical-align:top;text-align:right;">
+                    <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                      <tr>
+                        <td style="padding-bottom:8px;">
+                          <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#718096;">Invoice Date</p>
+                          <p style="margin:2px 0 0;font-size:13px;color:#1a202c;font-weight:600;">{{invoiceDate}}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#718096;">Due Date</p>
+                          <p style="margin:2px 0 0;font-size:13px;color:#c53030;font-weight:600;">{{dueDate}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Line Items -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:24px;">
+                <tr style="background:#f7fafc;">
+                  <td style="padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#718096;border-bottom:1px solid #e2e8f0;">Description</td>
+                  <td style="padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#718096;border-bottom:1px solid #e2e8f0;text-align:center;white-space:nowrap;">Qty</td>
+                  <td style="padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#718096;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">Unit Price</td>
+                  <td style="padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#718096;border-bottom:1px solid #e2e8f0;text-align:right;white-space:nowrap;">Total</td>
+                </tr>
+                {{#each items}}
+                <tr style="border-bottom:1px solid #f0f4f8;">
+                  <td style="padding:12px 14px;font-size:13px;color:#2d3748;">{{this.description}}</td>
+                  <td style="padding:12px 14px;font-size:13px;color:#4a5568;text-align:center;">{{this.quantity}}</td>
+                  <td style="padding:12px 14px;font-size:13px;color:#4a5568;text-align:right;white-space:nowrap;">{{currency this.unitPrice}}</td>
+                  <td style="padding:12px 14px;font-size:13px;font-weight:600;color:#1a202c;text-align:right;white-space:nowrap;">{{currency this.total}}</td>
+                </tr>
+                {{/each}}
+              </table>
+
+              <!-- Totals -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  <td></td>
+                  <td style="width:260px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                      <tr>
+                        <td style="padding:6px 0;font-size:13px;color:#718096;">Subtotal</td>
+                        <td style="padding:6px 0;font-size:13px;color:#1a202c;font-weight:600;text-align:right;">{{currency subtotal}}</td>
+                      </tr>
+                      {{#if discount}}
+                      <tr>
+                        <td style="padding:6px 0;font-size:13px;color:#276749;">Discount</td>
+                        <td style="padding:6px 0;font-size:13px;color:#276749;font-weight:600;text-align:right;">− {{currency discount}}</td>
+                      </tr>
+                      {{/if}}
+                      {{#if tax}}
+                      <tr>
+                        <td style="padding:6px 0;font-size:13px;color:#718096;">Tax</td>
+                        <td style="padding:6px 0;font-size:13px;color:#1a202c;font-weight:600;text-align:right;">{{currency tax}}</td>
+                      </tr>
+                      {{/if}}
+                      <tr>
+                        <td style="padding:10px 0 6px;font-size:15px;font-weight:700;color:#1a202c;border-top:2px solid #e2e8f0;">Total</td>
+                        <td style="padding:10px 0 6px;font-size:15px;font-weight:700;color:#1a202c;text-align:right;border-top:2px solid #e2e8f0;">{{currency total}}</td>
+                      </tr>
+                      {{#if paid}}
+                      <tr>
+                        <td style="padding:6px 0;font-size:13px;color:#276749;">Amount Paid</td>
+                        <td style="padding:6px 0;font-size:13px;color:#276749;font-weight:600;text-align:right;">− {{currency paid}}</td>
+                      </tr>
+                      {{/if}}
+                      <tr>
+                        <td style="padding:10px 14px;font-size:15px;font-weight:700;color:#ffffff;background:#1a3a5c;border-radius:4px 0 0 4px;">Balance Due</td>
+                        <td style="padding:10px 14px;font-size:15px;font-weight:700;color:#ffffff;background:#1a3a5c;text-align:right;border-radius:0 4px 4px 0;">{{currency balance}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Pay CTA -->
+              {{#if paymentLink}}
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  <td align="center">
+                    <a href="{{paymentLink}}"
+                       style="display:inline-block;background:#276749;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:6px;">
+                      Pay Now
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              {{/if}}
+
+              <!-- Contact -->
+              <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px 20px;">
+                <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#2d3748;">Questions about this invoice?</p>
+                {{#if facilityPhone}}<p style="margin:0 0 4px;font-size:13px;color:#718096;">📞 {{facilityPhone}}</p>{{/if}}
+                {{#if facilityEmail}}<p style="margin:0;font-size:13px;color:#718096;">✉ <a href="mailto:{{facilityEmail}}" style="color:#4299e1;text-decoration:none;">{{facilityEmail}}</a></p>{{/if}}
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#2d3748;padding:24px 40px;border-radius:0 0 8px 8px;text-align:center;">
+              <p style="margin:0;color:#a0aec0;font-size:12px;line-height:1.6;">
+                © {{facilityName}}. All rights reserved.<br/>
+                This is an automated message — please do not reply.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

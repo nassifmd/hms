@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Welcome to the Team</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Welcome to {{facilityName}}, {{name}} — your staff account is ready.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f0f4f8;padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;" role="presentation">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#1a3a5c;padding:32px 40px;border-radius:8px 8px 0 0;text-align:center;">
+              <p style="margin:0;color:#93c5fd;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">{{facilityName}}</p>
+              <h1 style="margin:8px 0 0;color:#ffffff;font-size:24px;font-weight:700;">Welcome to the Team</h1>
+              <p style="margin:8px 0 0;color:#bfdbfe;font-size:14px;">Your staff account has been created.</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:40px;">
+              <p style="margin:0 0 16px;font-size:16px;color:#2d3748;line-height:1.6;">Dear <strong>{{name}}</strong>,</p>
+              <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.6;">
+                We are delighted to have you join <strong>{{facilityName}}</strong>. Your staff account has been set up and your login credentials are below.
+              </p>
+
+              <!-- Credentials Card -->
+              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:24px;margin-bottom:28px;">
+                <p style="margin:0 0 16px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0369a1;">Your Login Credentials</p>
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td style="padding-bottom:14px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#64748b;">Employee ID</p>
+                      <p style="margin:4px 0 0;font-size:18px;font-weight:700;color:#0c4a6e;font-family:'Courier New',monospace;letter-spacing:2px;">{{employeeId}}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="border-top:1px solid #bae6fd;padding-top:14px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#64748b;">Temporary Password</p>
+                      <p style="margin:4px 0 0;font-size:18px;font-weight:700;color:#0c4a6e;font-family:'Courier New',monospace;letter-spacing:2px;">{{temporaryPassword}}</p>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Warning -->
+              <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:14px 16px;margin-bottom:28px;">
+                <p style="margin:0;font-size:13px;color:#92400e;line-height:1.6;">
+                  <strong>Important:</strong> You will be prompted to change this temporary password upon your first login.
+                  Do not share your credentials with anyone.
+                </p>
+              </div>
+
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  <td align="center">
+                    <a href="{{loginLink}}"
+                       style="display:inline-block;background:#1a3a5c;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 36px;border-radius:6px;">
+                      Log In to Your Account
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Support -->
+              <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;padding:16px 20px;">
+                <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#2d3748;">Need help getting started?</p>
+                {{#if supportEmail}}<p style="margin:0 0 4px;font-size:13px;color:#718096;">✉ <a href="mailto:{{supportEmail}}" style="color:#4299e1;text-decoration:none;">{{supportEmail}}</a></p>{{/if}}
+                {{#if supportPhone}}<p style="margin:0;font-size:13px;color:#718096;">📞 {{supportPhone}}</p>{{/if}}
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#2d3748;padding:24px 40px;border-radius:0 0 8px 8px;text-align:center;">
+              <p style="margin:0;color:#a0aec0;font-size:12px;line-height:1.6;">
+                © {{facilityName}}. All rights reserved.<br/>
+                This is an automated message — please do not reply.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

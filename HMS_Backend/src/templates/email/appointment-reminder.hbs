@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Appointment Reminder</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Reminder: Your appointment with Dr. {{doctorName}} on {{date}} at {{time}}.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f0f4f8;padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;" role="presentation">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#1a3a5c;padding:28px 40px;border-radius:8px 8px 0 0;text-align:center;">
+              <p style="margin:0;color:#93c5fd;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">{{location}}</p>
+              <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;">Appointment Reminder</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:40px;">
+              <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.6;">Dear <strong>{{patientName}}</strong>,</p>
+              <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.6;">
+                This is a friendly reminder about your upcoming appointment. Please arrive <strong>15 minutes early</strong> to complete any necessary registration or paperwork.
+              </p>
+
+              <!-- Appointment Detail Card -->
+              <div style="background:#f7fafc;border:1px solid #e2e8f0;border-left:4px solid #2b6cb0;border-radius:6px;padding:24px;margin-bottom:28px;">
+
+                <!-- Clinician -->
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td style="padding-bottom:16px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#718096;">Clinician</p>
+                      <p style="margin:4px 0 0;font-size:17px;font-weight:700;color:#1a202c;">Dr. {{doctorName}}</p>
+                      <p style="margin:2px 0 0;font-size:13px;color:#718096;">{{department}}</p>
+                    </td>
+                  </tr>
+
+                  <!-- Date & Time -->
+                  <tr>
+                    <td style="border-top:1px solid #e2e8f0;padding:16px 0;">
+                      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td width="50%" style="vertical-align:top;padding-right:16px;">
+                            <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#718096;">Date</p>
+                            <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#1a202c;">{{date}}</p>
+                          </td>
+                          <td width="50%" style="vertical-align:top;">
+                            <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#718096;">Time</p>
+                            <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#1a202c;">{{time}}</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <!-- Location -->
+                  <tr>
+                    <td style="border-top:1px solid #e2e8f0;padding-top:16px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#718096;">Location</p>
+                      <p style="margin:4px 0 0;font-size:15px;font-weight:600;color:#1a202c;">{{location}}</p>
+                      {{#if address}}<p style="margin:2px 0 0;font-size:13px;color:#718096;">{{address}}</p>{{/if}}
+                      {{#if contact}}<p style="margin:2px 0 0;font-size:13px;color:#718096;">Tel: {{contact}}</p>{{/if}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- Action Buttons -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  <td align="center">
+                    <a href="{{confirmationLink}}"
+                       style="display:inline-block;background:#276749;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:6px;margin:4px 6px;">
+                      ✔ Confirm Appointment
+                    </a>
+                    <a href="{{rescheduleLink}}"
+                       style="display:inline-block;background:#c05621;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:6px;margin:4px 6px;">
+                      ↺ Reschedule
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- What to bring -->
+              <div style="background:#ebf8ff;border:1px solid #bee3f8;border-radius:6px;padding:14px 16px;">
+                <p style="margin:0;font-size:13px;color:#2b6cb0;line-height:1.6;">
+                  <strong>What to bring:</strong> Your patient ID card, NHIS card (if applicable), any previous medical records, and a list of current medications.
+                </p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#2d3748;padding:24px 40px;border-radius:0 0 8px 8px;text-align:center;">
+              <p style="margin:0;color:#a0aec0;font-size:12px;line-height:1.6;">
+                This is an automated reminder — please do not reply to this email.{{#if contact}}<br/>Questions? Call us at <strong style="color:#e2e8f0;">{{contact}}</strong>{{/if}}
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

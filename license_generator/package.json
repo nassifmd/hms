@@ -1,0 +1,19 @@
+{
+  "name": "hms-license-generator",
+  "version": "1.0.0",
+  "description": "HMS Module License Key Generator — offline CLI tool for generating and verifying module activation codes",
+  "main": "index.js",
+  "bin": {
+    "hms-license": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "generate": "node index.js generate",
+    "verify": "node index.js verify"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["hms", "license", "activation"],
+  "license": "UNLICENSED"
+}

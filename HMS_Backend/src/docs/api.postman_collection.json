@@ -1,0 +1,4604 @@
+{
+  "info": {
+    "name": "Hospital Management System API New",
+    "description": "Complete API collection for Hospital Management System compliant with Ghana Health Service standards",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Authentication endpoints",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john.doe@hospital.gov.gh\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticate user and get JWT token"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh-token",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh-token"]
+            },
+            "description": "Refresh access token using refresh token"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Logout user and invalidate tokens"
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"currentPassword\": \"oldpassword123\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/change-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "change-password"]
+            },
+            "description": "Change user password"
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john.doe@hospital.gov.gh\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Request password reset email"
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"token\": \"reset_token_here\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "reset-password"]
+            },
+            "description": "Reset password with token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "Get current user profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone_number\": \"0244123456\",\n    \"address\": \"15 Independence Avenue, Accra\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "Update current user profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"phone\": \"0244123456\"\n}"},
+            "url": {"raw":"{{base_url}}/auth/send-otp","host":["{{base_url}}"],"path":["auth","send-otp"]},
+            "description":"Send one-time password to user"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"phone\": \"0244123456\",\n  \"otp\": \"123456\"\n}"},
+            "url": {"raw":"{{base_url}}/auth/verify-otp","host":["{{base_url}}"],"path":["auth","verify-otp"]},
+            "description":"Verify one-time password"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints",
+      "item": [
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users?page=1&limit=50&search=john",
+              "host": ["{{base_url}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "search",
+                  "value": "john"
+                }
+              ]
+            },
+            "description": "Get all users with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Smith\",\n    \"email\": \"jane.smith@hospital.gov.gh\",\n    \"password\": \"password123\",\n    \"role_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"department_id\": \"123e4567-e89b-12d3-a456-426614174001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            },
+            "description": "Create a new user (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get user by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"phone_number\": \"0244123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Update user"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Delete user (soft delete)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000/roles",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000", "roles"]
+            },
+            "description": "Get user roles"
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"roleId\": \"123e4567-e89b-12d3-a456-426614174001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000/roles",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000", "roles"]
+            },
+            "description": "Assign role to user"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/123e4567-e89b-12d3-a456-426614174000/roles/123e4567-e89b-12d3-a456-426614174001",
+              "host": ["{{base_url}}"],
+              "path": ["users", "123e4567-e89b-12d3-a456-426614174000", "roles", "123e4567-e89b-12d3-a456-426614174001"]
+            },
+            "description": "Remove role from user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Doctors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/doctors/available?date=2024-02-20&startTime=10:00&endTime=12:00",
+              "host": ["{{base_url}}"],
+              "path": ["users", "doctors", "available"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2024-02-20"
+                },
+                {
+                  "key": "startTime",
+                  "value": "10:00"
+                },
+                {
+                  "key": "endTime",
+                  "value": "12:00"
+                }
+              ]
+            },
+            "description": "Get available doctors for appointment"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "description": "Patient management endpoints",
+      "item": [
+        {
+          "name": "Get Patients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients?page=1&limit=50&search=kwame&gender=Male",
+              "host": ["{{base_url}}"],
+              "path": ["patients"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "search",
+                  "value": "kwame"
+                },
+                {
+                  "key": "gender",
+                  "value": "Male"
+                }
+              ]
+            },
+            "description": "Get all patients with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Kwame\",\n    \"last_name\": \"Mensah\",\n    \"date_of_birth\": \"1985-06-15\",\n    \"gender\": \"Male\",\n    \"phone_number\": \"0244123456\",\n    \"email\": \"kwame.mensah@email.com\",\n    \"nhis_number\": \"NHIS/12345678\",\n    \"address_line1\": \"15 Independence Avenue\",\n    \"city\": \"Accra\",\n    \"region\": \"Greater Accra\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/patients",
+              "host": ["{{base_url}}"],
+              "path": ["patients"]
+            },
+            "description": "Register a new patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Patients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/search?q=mensah",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "mensah"
+                }
+              ]
+            },
+            "description": "Search patients"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get patient by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient by Number",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/number/PAT-2024-00001",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "number", "PAT-2024-00001"]
+            },
+            "description": "Get patient by patient number"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Patient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone_number\": \"0244123457\",\n    \"address_line1\": \"20 Liberation Road\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Update patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Vitals",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"height_cm\": 175,\n    \"weight_kg\": 80.5,\n    \"temperature_celsius\": 36.6,\n    \"systolic_bp\": 120,\n    \"diastolic_bp\": 80,\n    \"heart_rate\": 72,\n    \"oxygen_saturation\": 98\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/vitals",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "vitals"]
+            },
+            "description": "Add patient vitals"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vitals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/vitals",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "vitals"]
+            },
+            "description": "Get patient vitals"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Next of Kin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Akua Mensah\",\n    \"relationship\": \"Spouse\",\n    \"phone_number\": \"0244123457\",\n    \"is_primary\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/next-of-kin",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "next-of-kin"]
+            },
+            "description": "Add next of kin"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Insurance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"insurance_provider\": \"NHIS\",\n    \"policy_number\": \"NHIS/12345678\",\n    \"expiry_date\": \"2025-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/insurance",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "insurance"]
+            },
+            "description": "Add patient insurance"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/visits",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "visits"]
+            },
+            "description": "Get patient visits"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/appointments",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "appointments"]
+            },
+            "description": "Get patient appointments"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Bills",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/bills",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "bills"]
+            },
+            "description": "Get patient bills"
+          },
+          "response": []
+        },
+        {
+          "name": "Get NHIS Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/patients/123e4567-e89b-12d3-a456-426614174000/nhis-status",
+              "host": ["{{base_url}}"],
+              "path": ["patients", "123e4567-e89b-12d3-a456-426614174000", "nhis-status"]
+            },
+            "description": "Get patient NHIS status"
+          },
+          "response": []
+        },
+        {
+          "name": "Merge Patients",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"source_id\": \"{{id1}}\",\n  \"target_id\": \"{{id2}}\"\n}"},
+            "url": {"raw":"{{base_url}}/patients/merge","host":["{{base_url}}"],"path":["patients","merge"]},
+            "description":"Merge two patient records"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "description": "Appointment scheduling endpoints",
+      "item": [
+        {
+          "name": "Get Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments?date=2024-02-20&status=Scheduled",
+              "host": ["{{base_url}}"],
+              "path": ["appointments"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2024-02-20"
+                },
+                {
+                  "key": "status",
+                  "value": "Scheduled"
+                }
+              ]
+            },
+            "description": "Get all appointments with filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"doctor_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"department_id\": \"123e4567-e89b-12d3-a456-426614174002\",\n    \"appointment_date\": \"2024-02-20\",\n    \"start_time\": \"10:00\",\n    \"end_time\": \"10:30\",\n    \"appointment_type\": \"Consultation\",\n    \"reason\": \"Routine checkup\",\n    \"send_reminder\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/appointments",
+              "host": ["{{base_url}}"],
+              "path": ["appointments"]
+            },
+            "description": "Create a new appointment"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Today's Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/today",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "today"]
+            },
+            "description": "Get today's appointments"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Slots",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/available-slots?doctor_id=123e4567-e89b-12d3-a456-426614174001&date=2024-02-20",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "available-slots"],
+              "query": [
+                {
+                  "key": "doctor_id",
+                  "value": "123e4567-e89b-12d3-a456-426614174001"
+                },
+                {
+                  "key": "date",
+                  "value": "2024-02-20"
+                }
+              ]
+            },
+            "description": "Get available appointment slots"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Appointment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get appointment by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"Patient called to reschedule\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000", "cancel"]
+            },
+            "description": "Cancel appointment"
+          },
+          "response": []
+        },
+        {
+          "name": "Reschedule Appointment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"new_date\": \"2024-02-21\",\n    \"new_start_time\": \"11:00\",\n    \"new_end_time\": \"11:30\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000/reschedule",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000", "reschedule"]
+            },
+            "description": "Reschedule appointment"
+          },
+          "response": []
+        },
+        {
+          "name": "Check In",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000/check-in",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000", "check-in"]
+            },
+            "description": "Check-in patient for appointment"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Out",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000/check-out",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000", "check-out"]
+            },
+            "description": "Check-out patient from appointment"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark No Show",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/123e4567-e89b-12d3-a456-426614174000/no-show",
+              "host": ["{{base_url}}"],
+              "path": ["appointments", "123e4567-e89b-12d3-a456-426614174000", "no-show"]
+            },
+            "description": "Mark appointment as no-show"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Create Appointments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization","value": "Bearer {{access_token}}"},
+              {"key": "Content-Type","value": "application/json"}
+            ],
+            "body": {"mode":"raw","raw":"[ {\"patient_id\":\"...\",\"doctor_id\":\"...\"} ]"},
+            "url": {
+              "raw": "{{base_url}}/appointments/bulk",
+              "host": ["{{base_url}}"],
+              "path": ["appointments","bulk"]
+            },
+            "description": "Create multiple appointments"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Appointment Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization","value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/stats",
+              "host": ["{{base_url}}"],
+              "path": ["appointments","stats"]
+            },
+            "description": "Get appointment statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Doctor Schedule",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization","value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/doctor/{{doctor_id}}/schedule?date=2024-02-20",
+              "host": ["{{base_url}}"],
+              "path": ["appointments","doctor","{{doctor_id}}","schedule"],
+              "query": [{"key":"date","value":"2024-02-20"}]
+            },
+            "description": "Get doctor schedule"
+          },
+          "response": []
+        },
+        {
+          "name": "Patient Upcoming",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization","value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/appointments/patient/{{patient_id}}/upcoming",
+              "host": ["{{base_url}}"],
+              "path": ["appointments","patient","{{patient_id}}","upcoming"]
+            },
+            "description": "Get upcoming appointments for patient"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clinical",
+      "description": "Clinical documentation endpoints",
+      "item": [
+        {
+          "name": "Get Active Visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clinical/visits/active",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits", "active"]
+            },
+            "description": "Get active visits"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Visit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"department_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"visit_type\": \"Outpatient\",\n    \"chief_complaint\": \"Headache and fever\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clinical/visits",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits"]
+            },
+            "description": "Create a new visit"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Visit",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get visit by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Triage Visit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"notes\": \"Patient appears stable\",\n    \"vitals\": {\n        \"temperature_celsius\": 36.6,\n        \"systolic_bp\": 120,\n        \"diastolic_bp\": 80,\n        \"heart_rate\": 72\n    }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000/triage",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits", "123e4567-e89b-12d3-a456-426614174000", "triage"]
+            },
+            "description": "Triage patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Diagnosis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"diagnosis_code\": \"B50.0\",\n    \"diagnosis_name\": \"Plasmodium falciparum malaria\",\n    \"diagnosis_type\": \"Primary\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000/diagnoses",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits", "123e4567-e89b-12d3-a456-426614174000", "diagnoses"]
+            },
+            "description": "Add diagnosis to visit"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Prescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"visit_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"items\": [\n        {\n            \"medication_name\": \"Artemether/Lumefantrine\",\n            \"dosage\": \"80mg/480mg\",\n            \"frequency\": \"Twice daily\",\n            \"duration\": \"3 days\",\n            \"quantity\": 6\n        },\n        {\n            \"medication_name\": \"Paracetamol\",\n            \"dosage\": \"500mg\",\n            \"frequency\": \"Three times daily\",\n            \"duration\": \"3 days\",\n            \"quantity\": 9\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clinical/prescriptions",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "prescriptions"]
+            },
+            "description": "Create prescription"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Prescription",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/clinical/prescriptions/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "prescriptions", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get prescription by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Discharge Patient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"discharge_notes\": \"Patient recovered well. Follow up in 2 weeks.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000/discharge",
+              "host": ["{{base_url}}"],
+              "path": ["clinical", "visits", "123e4567-e89b-12d3-a456-426614174000", "discharge"]
+            },
+            "description": "Discharge patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Transfer Patient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"department_id\": \"{dept}\",\n  \"reason\": \"Need specialist\"\n}"},
+            "url": {"raw":"{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000/transfer","host":["{{base_url}}"],"path":["clinical","visits","123e4567-e89b-12d3-a456-426614174000","transfer"]},
+            "description":"Transfer patient to another department"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Visit Timeline",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/visits/123e4567-e89b-12d3-a456-426614174000/timeline","host":["{{base_url}}"],"path":["clinical","visits","123e4567-e89b-12d3-a456-426614174000","timeline"]},
+            "description":"Get visit timeline"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Diagnosis by ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/diagnoses/{{id}}","host":["{{base_url}}"],"path":["clinical","diagnoses","{{id}}"]},
+            "description":"Retrieve a diagnosis"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Diagnosis",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/diagnoses/{{id}}","host":["{{base_url}}"],"path":["clinical","diagnoses","{{id}}"]},
+            "description":"Update diagnosis details"
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Diagnosis",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/diagnoses/{{id}}/confirm","host":["{{base_url}}"],"path":["clinical","diagnoses","{{id}}","confirm"]},
+            "description":"Confirm a diagnosis"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Prescription",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/prescriptions/{{id}}","host":["{{base_url}}"],"path":["clinical","prescriptions","{{id}}"]},
+            "description":"Update prescription"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Prescription Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "url": {"raw":"{{base_url}}/clinical/prescriptions/{{id}}/items","host":["{{base_url}}"],"path":["clinical","prescriptions","{{id}}","items"]},
+            "description":"Add item to prescription"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Prescription Item",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/prescriptions/{{prescriptionId}}/items/{{itemId}}","host":["{{base_url}}"],"path":["clinical","prescriptions","{{prescriptionId}}","items","{{itemId}}"]},
+            "description":"Update prescription item"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Prescription Item",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/prescriptions/{{prescriptionId}}/items/{{itemId}}","host":["{{base_url}}"],"path":["clinical","prescriptions","{{prescriptionId}}","items","{{itemId}}"]},
+            "description":"Delete prescription item"
+          },
+          "response": []
+        },
+        {
+          "name": "Export Clinical Data",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/export?patient_id={{patientId}}","host":["{{base_url}}"],"path":["clinical","export"],"query":[{"key":"patient_id","value":"{{patientId}}"}]},
+            "description":"Export clinical data"
+          },
+          "response": []
+        },
+        {
+          "name": "Analytics - Common Diagnoses",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/analytics/common-diagnoses","host":["{{base_url}}"],"path":["clinical","analytics","common-diagnoses"]},
+            "description":"Get common diagnoses analytics"
+          },
+          "response": []
+        },
+        {
+          "name": "Analytics - Diagnosis Trends",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/analytics/diagnosis-trends?diagnosis_code=XYZ","host":["{{base_url}}"],"path":["clinical","analytics","diagnosis-trends"],"query":[{"key":"diagnosis_code","value":"XYZ"}]},
+            "description":"Get diagnosis trends analytics"
+          },
+          "response": []
+        },
+        {
+          "name": "Analytics - Prescription Stats",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/analytics/prescription-stats?start_date=2024-01-01&end_date=2024-01-31","host":["{{base_url}}"],"path":["clinical","analytics","prescription-stats"],"query":[{"key":"start_date","value":"2024-01-01"},{"key":"end_date","value":"2024-01-31"}]},
+            "description":"Get prescription statistics analytics"
+          },
+          "response": []
+        },
+        {
+          "name": "Analytics - Department Stats",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/analytics/department-stats?department_id={{deptId}}&start_date=2024-01-01&end_date=2024-01-31","host":["{{base_url}}"],"path":["clinical","analytics","department-stats"],"query":[{"key":"department_id","value":"{{deptId}}"},{"key":"start_date","value":"2024-01-01"},{"key":"end_date","value":"2024-01-31"}]},
+            "description":"Get department visit statistics analytics"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Diagnoses",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/diagnoses/search?q=flu","host":["{{base_url}}"],"path":["clinical","diagnoses","search"],"query":[{"key":"q","value":"flu"}]},
+            "description":"Search for diagnoses"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/prescriptions/pending","host":["{{base_url}}"],"path":["clinical","prescriptions","pending"]},
+            "description":"Retrieve pending prescriptions"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Visits",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/patients/{{patientId}}/visits","host":["{{base_url}}"],"path":["clinical","patients","{{patientId}}","visits"]},
+            "description":"List visits for a patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Diagnoses",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/patients/{{patientId}}/diagnoses","host":["{{base_url}}"],"path":["clinical","patients","{{patientId}}","diagnoses"]},
+            "description":"List diagnoses for a patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Prescriptions",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/clinical/patients/{{patientId}}/prescriptions","host":["{{base_url}}"],"path":["clinical","patients","{{patientId}}","prescriptions"]},
+            "description":"List prescriptions for a patient"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy",
+      "description": "Pharmacy management endpoints",
+      "item": [
+        {
+          "name": "Search Drugs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pharmacy/drugs/search?q=artemether",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "drugs", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "artemether"
+                }
+              ]
+            },
+            "description": "Search drugs"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inventory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pharmacy/inventory?low_stock_only=true",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "inventory"],
+              "query": [
+                {
+                  "key": "low_stock_only",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get inventory"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Inventory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"drug_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"batch_number\": \"BATCH240201\",\n    \"expiry_date\": \"2025-01-31\",\n    \"quantity_on_hand\": 1000,\n    \"unit_cost\": 5.50,\n    \"selling_price\": 8.00,\n    \"location_in_pharmacy\": \"Shelf A1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pharmacy/inventory",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "inventory"]
+            },
+            "description": "Add inventory batch"
+          },
+          "response": []
+        },
+        {
+          "name": "Dispense Medication",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"prescription_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"items\": [\n        {\n            \"inventory_id\": \"123e4567-e89b-12d3-a456-426614174002\",\n            \"quantity\": 6\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pharmacy/dispense",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "dispense"]
+            },
+            "description": "Dispense medication"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Low Stock Alerts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pharmacy/alerts/low-stock",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "alerts", "low-stock"]
+            },
+            "description": "Get low stock alerts"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Expiry Alerts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pharmacy/alerts/expiry?days=30",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "alerts", "expiry"],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30"
+                }
+              ]
+            },
+            "description": "Get expiry alerts"
+          },
+          "response": []
+        },
+        {
+          "name": "Perform Stock Take",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"items\": [\n        {\n            \"inventory_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"counted_quantity\": 950\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pharmacy/stock-take",
+              "host": ["{{base_url}}"],
+              "path": ["pharmacy", "stock-take"]
+            },
+            "description": "Perform stock take"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Drug",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Content-Type","value":"application/json"},
+              {"key":"Authorization","value":"Bearer {{access_token}}"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"drug_name\": \"Paracetamol\",\n  \"generic_name\": \"Acetaminophen\"\n}"},
+            "url": {"raw":"{{base_url}}/pharmacy/drugs","host":["{{base_url}}"],"path":["pharmacy","drugs"]},
+            "description":"Add a new drug"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Drug By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/drugs/{{id}}","host":["{{base_url}}"],"path":["pharmacy","drugs","{{id}}"]},
+            "description":"Retrieve drug details"
+          },
+          "response": []
+        },
+        {
+          "name": "List Dispensing By Patient",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/dispensing/patient/{{patientId}}","host":["{{base_url}}"],"path":["pharmacy","dispensing","patient","{{patientId}}"]},
+            "description":"Get dispensing records for a patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movements",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/movements","host":["{{base_url}}"],"path":["pharmacy","movements"]},
+            "description":"List pharmacy stock movements"
+          },
+          "response": []
+        },
+        {
+          "name": "Inventory Value Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/reports/inventory-value","host":["{{base_url}}"],"path":["pharmacy","reports","inventory-value"]},
+            "description":"Get inventory value report"
+          },
+          "response": []
+        },
+        {
+          "name": "Consumption Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/reports/consumption","host":["{{base_url}}"],"path":["pharmacy","reports","consumption"]},
+            "description":"Get consumption report"
+          },
+          "response": []
+        },
+        {
+          "name": "Expiry Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/reports/expiry","host":["{{base_url}}"],"path":["pharmacy","reports","expiry"]},
+            "description":"Get expiry report"
+          },
+          "response": []
+        },
+        {
+          "name": "Pharmacy Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/pharmacy/dashboard","host":["{{base_url}}"],"path":["pharmacy","dashboard"]},
+            "description":"Retrieve pharmacy dashboard data"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Laboratory",
+      "description": "Laboratory management endpoints",
+      "item": [
+        {
+          "name": "Get Lab Tests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/lab/tests",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "tests"]
+            },
+            "description": "Get lab tests catalog"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Lab Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"test_code\": \"GLU\",\n    \"test_name\": \"Glucose\",\n    \"test_category\": \"Chemistry\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/lab/tests",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "tests"]
+            },
+            "description": "Create a new lab test (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Lab Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"visit_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"priority\": \"Routine\",\n    \"tests\": [\n        {\n            \"test_id\": \"123e4567-e89b-12d3-a456-426614174002\"\n        },\n        {\n            \"test_id\": \"123e4567-e89b-12d3-a456-426614174003\"\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/lab/orders",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "orders"]
+            },
+            "description": "Create lab order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/lab/orders/pending",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "orders", "pending"]
+            },
+            "description": "Get pending lab orders"
+          },
+          "response": []
+        },
+        {
+          "name": "Collect Specimen",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"specimen_id\": \"SPEC-001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/lab/orders/123e4567-e89b-12d3-a456-426614174000/items/123e4567-e89b-12d3-a456-426614174001/collect",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "orders", "123e4567-e89b-12d3-a456-426614174000", "items", "123e4567-e89b-12d3-a456-426614174001", "collect"]
+            },
+            "description": "Collect specimen"
+          },
+          "response": []
+        },
+        {
+          "name": "Enter Result",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"result_value\": \"Positive\",\n    \"is_abnormal\": true,\n    \"is_critical\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/lab/orders/123e4567-e89b-12d3-a456-426614174000/items/123e4567-e89b-12d3-a456-426614174001/result",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "orders", "123e4567-e89b-12d3-a456-426614174000", "items", "123e4567-e89b-12d3-a456-426614174001", "result"]
+            },
+            "description": "Enter test result"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Result",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/lab/orders/123e4567-e89b-12d3-a456-426614174000/items/123e4567-e89b-12d3-a456-426614174001/verify",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "orders", "123e4567-e89b-12d3-a456-426614174000", "items", "123e4567-e89b-12d3-a456-426614174001", "verify"]
+            },
+            "description": "Verify test result"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Critical Alerts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/lab/alerts/critical",
+              "host": ["{{base_url}}"],
+              "path": ["lab", "alerts", "critical"]
+            },
+            "description": "Get critical alerts"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/orders/{{orderId}}","host":["{{base_url}}"],"path":["lab","orders","{{orderId}}"]},
+            "description":"Get lab order by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Results",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/orders/{{orderId}}/results","host":["{{base_url}}"],"path":["lab","orders","{{orderId}}","results"]},
+            "description":"Get lab order results"
+          },
+          "response": []
+        },
+        {
+          "name": "Print Order",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/orders/{{orderId}}/print","host":["{{base_url}}"],"path":["lab","orders","{{orderId}}","print"]},
+            "description":"Print lab order"
+          },
+          "response": []
+        },
+        {
+          "name": "Post Order Comment",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"},{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw":"{\n  \"comment\": \"Specimen delayed\"\n}"},
+            "url": {"raw":"{{base_url}}/lab/orders/{{orderId}}/comments","host":["{{base_url}}"],"path":["lab","orders","{{orderId}}","comments"]},
+            "description":"Add comment to lab order"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Comments",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/orders/{{orderId}}/comments","host":["{{base_url}}"],"path":["lab","orders","{{orderId}}","comments"]},
+            "description":"Retrieve comments for lab order"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Tests",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/tests/search?q=glucose","host":["{{base_url}}"],"path":["lab","tests","search"],"query":[{"key":"q","value":"glucose"}]},
+            "description":"Search lab tests"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Panels",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/lab/panels","host":["{{base_url}}"],"path":["lab","panels"]},
+            "description":"List lab panels"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Panel",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"},{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw":"{\n  \"panel_name\": \"Basic Metabolic\",\n  \"tests\": [\"GLU\",\"NA\"]\n}"},
+            "url": {"raw":"{{base_url}}/lab/panels","host":["{{base_url}}"],"path":["lab","panels"]},
+            "description":"Create lab panel"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Billing",
+      "description": "Billing and payment endpoints",
+      "item": [
+        {
+          "name": "Create Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"visit_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"items\": [\n        {\n            \"item_type\": \"Consultation\",\n            \"item_name\": \"Medical Consultation\",\n            \"quantity\": 1,\n            \"unit_price\": 150.00\n        },\n        {\n            \"item_type\": \"Lab\",\n            \"item_name\": \"Malaria Test\",\n            \"quantity\": 1,\n            \"unit_price\": 50.00\n        },\n        {\n            \"item_type\": \"Drug\",\n            \"item_name\": \"Artemether/Lumefantrine\",\n            \"quantity\": 6,\n            \"unit_price\": 8.00\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/invoices",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "invoices"]
+            },
+            "description": "Create new invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Outstanding Invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/invoices/outstanding",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "invoices", "outstanding"]
+            },
+            "description": "Get outstanding invoices"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"invoice_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"amount\": 248.00,\n    \"payment_method\": \"Mobile Money\",\n    \"metadata\": {\n        \"provider\": \"MTN\",\n        \"phone\": \"0244123456\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/payments",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "payments"]
+            },
+            "description": "Add payment to invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Invoice",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/invoices/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "invoices", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get invoice by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Apply Discount",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"percentage\": 10,\n    \"reason\": \"NHIS coverage\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/invoices/123e4567-e89b-12d3-a456-426614174000/discount",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "invoices", "123e4567-e89b-12d3-a456-426614174000", "discount"]
+            },
+            "description": "Apply discount to invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Void Invoice",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"Incorrect charges\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/invoices/123e4567-e89b-12d3-a456-426614174000/void",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "invoices", "123e4567-e89b-12d3-a456-426614174000", "void"]
+            },
+            "description": "Void invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Receipt",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/payments/123e4567-e89b-12d3-a456-426614174000/receipt",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "payments", "123e4567-e89b-12d3-a456-426614174000", "receipt"]
+            },
+            "description": "Generate receipt"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"}
+            ],
+            "url": {"raw":"{{base_url}}/billing/payments/{{payment_id}}","host":["{{base_url}}"],"path":["billing","payments","{{payment_id}}"]},
+            "description":"Get payment by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Void Payment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n    \"reason\": \"Duplicate\"\n}"},
+            "url": {"raw":"{{base_url}}/billing/payments/{{payment_id}}/void","host":["{{base_url}}"],"path":["billing","payments","{{payment_id}}","void"]},
+            "description":"Void a payment"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Invoices",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/patients/{{patientId}}/invoices","host":["{{base_url}}"],"path":["billing","patients","{{patientId}}","invoices"]},
+            "description":"Get invoices belonging to a patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Invoice Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"item_type\": \"Drug\",\n  \"item_name\": \"Paracetamol\",\n  \"quantity\": 10,\n  \"unit_price\": 2.5\n}"},
+            "url": {"raw":"{{base_url}}/billing/invoices/{{invoiceId}}/items","host":["{{base_url}}"],"path":["billing","invoices","{{invoiceId}}","items"]},
+            "description":"Add an item to an invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Invoice Item",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/invoices/{{invoiceId}}/items/{{itemId}}","host":["{{base_url}}"],"path":["billing","invoices","{{invoiceId}}","items","{{itemId}}"]},
+            "description":"Remove an item from an invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Daily Revenue Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/reports/daily-revenue","host":["{{base_url}}"],"path":["billing","reports","daily-revenue"]},
+            "description":"Get daily revenue report"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Revenue By Period",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/reports/revenue-by-period?start_date=2024-01-01&end_date=2024-01-31","host":["{{base_url}}"],"path":["billing","reports","revenue-by-period"],"query":[{"key":"start_date","value":"2024-01-01"},{"key":"end_date","value":"2024-01-31"}]},
+            "description":"Get revenue by period report"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Outstanding Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/reports/outstanding","host":["{{base_url}}"],"path":["billing","reports","outstanding"]},
+            "description":"Get outstanding billing report"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Insurance Billing Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/reports/insurance?start_date=2024-01-01&end_date=2024-01-31","host":["{{base_url}}"],"path":["billing","reports","insurance"],"query":[{"key":"start_date","value":"2024-01-01"},{"key":"end_date","value":"2024-01-31"}]},
+            "description":"Get insurance billing report"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment Methods Breakdown",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/reports/payment-methods?start_date=2024-01-01&end_date=2024-01-31","host":["{{base_url}}"],"path":["billing","reports","payment-methods"],"query":[{"key":"start_date","value":"2024-01-01"},{"key":"end_date","value":"2024-01-31"}]},
+            "description":"Get payment methods breakdown"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Billing Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/billing/dashboard","host":["{{base_url}}"],"path":["billing","dashboard"]},
+            "description":"Get billing dashboard"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Insurance",
+      "description": "Insurance and claims endpoints",
+      "item": [
+        {
+          "name": "Get Active Insurance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/patients/123e4567-e89b-12d3-a456-426614174000/active",
+              "host": ["{{base_url}}"],
+              "path": ["insurance","patients","123e4567-e89b-12d3-a456-426614174000","active"]
+            },
+            "description": "Get patient's current active insurance record"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Patient Insurance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"insurance_provider\": \"NHIS\",\n    \"policy_number\": \"NHIS/12345678\",\n    \"expiry_date\": \"2025-12-31\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/insurance/patient-insurance",
+              "host": ["{{base_url}}"],
+              "path": ["insurance","patient-insurance"]
+            },
+            "description": "Create patient insurance record"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify NHIS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nhis_number\": \"NHIS/12345678\",\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/insurance/verify-nhis",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "verify-nhis"]
+            },
+            "description": "Verify NHIS number"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Claim",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"invoice_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"patient_insurance_id\": \"123e4567-e89b-12d3-a456-426614174002\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/insurance/claims",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "claims"]
+            },
+            "description": "Create new insurance claim"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Claims",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/claims/pending",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "claims", "pending"]
+            },
+            "description": "Get pending claims"
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Claim",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/claims/123e4567-e89b-12d3-a456-426614174000/submit",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "claims", "123e4567-e89b-12d3-a456-426614174000", "submit"]
+            },
+            "description": "Submit claim to ClaimsIT"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Eligibility",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/patients/123e4567-e89b-12d3-a456-426614174000/eligibility?service_type=Consultation",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "patients", "123e4567-e89b-12d3-a456-426614174000", "eligibility"],
+              "query": [
+                {
+                  "key": "service_type",
+                  "value": "Consultation"
+                }
+              ]
+            },
+            "description": "Check patient eligibility"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Claim",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/claims/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "claims", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get claim by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Claim History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/insurance/claims/123e4567-e89b-12d3-a456-426614174000/history",
+              "host": ["{{base_url}}"],
+              "path": ["insurance", "claims", "123e4567-e89b-12d3-a456-426614174000", "history"]
+            },
+            "description": "Get claim status history"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Tariff",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/tariff/{{serviceCode}}","host":["{{base_url}}"],"path":["insurance","tariff","{{serviceCode}}"]},
+            "description":"Get service tariff"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Claim",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/claims/{{claimId}}/validate","host":["{{base_url}}"],"path":["insurance","claims","{{claimId}}","validate"]},
+            "description":"Validate a claim"
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Claim",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/claims/{{claimId}}/approve","host":["{{base_url}}"],"path":["insurance","claims","{{claimId}}","approve"]},
+            "description":"Approve a claim"
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Claim",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"reason\": \"Not covered\"\n}"},
+            "url": {"raw":"{{base_url}}/insurance/claims/{{claimId}}/reject","host":["{{base_url}}"],"path":["insurance","claims","{{claimId}}","reject"]},
+            "description":"Reject a claim"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Claim Paid",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n  \"amount_paid\": 100.00\n}"},
+            "url": {"raw":"{{base_url}}/insurance/claims/{{claimId}}/paid","host":["{{base_url}}"],"path":["insurance","claims","{{claimId}}","paid"]},
+            "description":"Mark claim as paid"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Claim Item",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/claims/{{claimId}}/items/{{itemId}}","host":["{{base_url}}"],"path":["insurance","claims","{{claimId}}","items","{{itemId}}"]},
+            "description":"Update item on claim"
+          },
+          "response": []
+        },
+        {
+          "name": "Sync Insurance Data",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/sync","host":["{{base_url}}"],"path":["insurance","sync"]},
+            "description":"Sync insurance data with external service"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Claims",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/patients/{{patientId}}/claims","host":["{{base_url}}"],"path":["insurance","patients","{{patientId}}","claims"]},
+            "description":"List claims for a patient"
+          },
+          "response": []
+        },
+        {
+          "name": "Get NHIS History",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/patients/{{patientId}}/nhis-history","host":["{{base_url}}"],"path":["insurance","patients","{{patientId}}","nhis-history"]},
+            "description":"Get patient's NHIS history"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Insurance Stats",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/stats","host":["{{base_url}}"],"path":["insurance","stats"]},
+            "description":"Get insurance statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Insurance Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/insurance/dashboard","host":["{{base_url}}"],"path":["insurance","dashboard"]},
+            "description":"Get insurance dashboard data"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dental",
+      "description": "Dental clinic endpoints",
+      "item": [
+        {
+          "name": "Create Dental Chart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"chart_type\": \"Adult\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dental/charts",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "charts"]
+            },
+            "description": "Create a new dental chart"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Dental Chart",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('response contains chart object', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.data).to.be.an('object');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Dental Catalog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"procedure_code\": \"DENT001\",\n    \"procedure_name\": \"Teeth Cleaning\",\n    \"procedure_category\": \"Hygiene\",\n    \"price\": 50.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dental/catalog",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "catalog"]
+            },
+            "description": "Add new item to dental procedure catalog"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 201 or 200', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Dental Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/stats",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "stats"]
+            },
+            "description": "Retrieve dental statistics"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Dental Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "dashboard"]
+            },
+            "description": "Retrieve dental dashboard data"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Patient Charts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/patients/123e4567-e89b-12d3-a456-426614174000/charts",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "patients", "123e4567-e89b-12d3-a456-426614174000", "charts"]
+            },
+            "description": "Get charts for a patient"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Patient Procedures",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/patients/123e4567-e89b-12d3-a456-426614174000/procedures",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "patients", "123e4567-e89b-12d3-a456-426614174000", "procedures"]
+            },
+            "description": "Get procedures for a patient"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Tooth History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/patients/123e4567-e89b-12d3-a456-426614174000/teeth/46/history",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "patients", "123e4567-e89b-12d3-a456-426614174000", "teeth", "46", "history"]
+            },
+            "description": "Get tooth treatment history"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Treatment Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"diagnosis\": \"Cavity\",\n    \"treatment_description\": \"Filling required\",\n    \"estimated_cost\": 120\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dental/charts/123e4567-e89b-12d3-a456-426614174000/treatment-plan",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "charts", "123e4567-e89b-12d3-a456-426614174000", "treatment-plan"]
+            },
+            "description": "Create treatment plan for a chart"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200 or 201', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Dental Procedure",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/procedures/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "procedures", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get dental procedure by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Dental Chart",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/charts/123e4567-e89b-12d3-a456-426614174000",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "charts", "123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description": "Get dental chart by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Tooth",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"Filling\",\n    \"condition_notes\": \"Composite filling on tooth 46\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dental/charts/123e4567-e89b-12d3-a456-426614174000/teeth/46",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "charts", "123e4567-e89b-12d3-a456-426614174000", "teeth", "46"]
+            },
+            "description": "Update tooth status"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Dental Procedure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"visit_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"procedure_id\": \"123e4567-e89b-12d3-a456-426614174002\",\n    \"tooth_number\": 46,\n    \"findings\": \"Deep caries\",\n    \"outcome\": \"Tooth restored successfully\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dental/procedures",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "procedures"]
+            },
+            "description": "Create dental procedure"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Procedure Catalog",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dental/catalog",
+              "host": ["{{base_url}}"],
+              "path": ["dental", "catalog"]
+            },
+            "description": "Get dental procedure catalog"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Eye Clinic",
+      "description": "Eye clinic endpoints",
+      "item": [
+        {
+          "name": "Create Eye Examination",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"visit_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"va_distance_right_uncorrected\": \"6/6\",\n    \"va_distance_left_uncorrected\": \"6/9\",\n    \"sphere_right\": -1.50,\n    \"sphere_left\": -1.75,\n    \"cylinder_right\": -0.50,\n    \"cylinder_left\": -0.50,\n    \"axis_right\": 180,\n    \"axis_left\": 175,\n    \"iop_right\": 16,\n    \"iop_left\": 15,\n    \"diagnosis_right\": \"Myopia\",\n    \"diagnosis_left\": \"Myopia with astigmatism\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/eye/examinations",
+              "host": ["{{base_url}}"],
+              "path": ["eye", "examinations"]
+            },
+            "description": "Create eye examination"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Glasses Prescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"patient_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"eye_examination_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"distance_sphere_right\": -1.50,\n    \"distance_sphere_left\": -1.75,\n    \"distance_cylinder_right\": -0.50,\n    \"distance_cylinder_left\": -0.50,\n    \"distance_axis_right\": 180,\n    \"distance_axis_left\": 175,\n    \"glasses_type\": \"Progressive\",\n    \"lens_type\": \"Photochromic\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/eye/prescriptions",
+              "host": ["{{base_url}}"],
+              "path": ["eye", "prescriptions"]
+            },
+            "description": "Create glasses prescription"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Optical Inventory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/eye/inventory?item_type=Frame",
+              "host": ["{{base_url}}"],
+              "path": ["eye", "inventory"],
+              "query": [
+                {
+                  "key": "item_type",
+                  "value": "Frame"
+                }
+              ]
+            },
+            "description": "Get optical inventory"
+          },
+          "response": []
+        },
+        {
+          "name": "Dispense Glasses",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/eye/prescriptions/123e4567-e89b-12d3-a456-426614174000/dispense",
+              "host": ["{{base_url}}"],
+              "path": ["eye", "prescriptions", "123e4567-e89b-12d3-a456-426614174000", "dispense"]
+            },
+            "description": "Mark glasses as dispensed"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Eye Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/eye/stats?start_date=2026-01-01&end_date=2026-01-31",
+              "host": ["{{base_url}}"],
+              "path": ["eye","stats"],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2026-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2026-01-31"
+                }
+              ]
+            },
+            "description": "Get eye examination statistics"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Eye Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/eye/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["eye","dashboard"]
+            },
+            "description": "Get eye clinic dashboard"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Optical Inventory Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              },
+              {
+                "key":"Content-Type",
+                "value":"application/json"
+              }
+            ],
+            "body": {
+              "mode":"raw",
+              "raw":"{\n    \"item_type\":\"Frame\",\n    \"item_code\":\"FRM-0001\",\n    \"item_name\":\"Classic Aviator\",\n    \"quantity_on_hand\":50,\n    \"selling_price\":120.00\n}"
+            },
+            "url": {
+              "raw":"{{base_url}}/eye/inventory",
+              "host":["{{base_url}}"],
+              "path":["eye","inventory"]
+            },
+            "description":"Add optical inventory item"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Update Optical Inventory Item",
+          "request":{
+            "method":"PUT",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              }
+            ],
+            "url":{
+              "raw":"{{base_url}}/eye/inventory/123e4567-e89b-12d3-a456-426614174000",
+              "host":["{{base_url}}"],
+              "path":["eye","inventory","123e4567-e89b-12d3-a456-426614174000"]
+            },
+            "description":"Update optical inventory item"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Get Patient Eye Examinations",
+          "request":{
+            "method":"GET",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              }
+            ],
+            "url":{
+              "raw":"{{base_url}}/eye/patients/123e4567-e89b-12d3-a456-426614174000/examinations",
+              "host":["{{base_url}}"],
+              "path":["eye","patients","123e4567-e89b-12d3-a456-426614174000","examinations"]
+            },
+            "description":"Get patient eye examinations"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Get Patient Eye Prescriptions",
+          "request":{
+            "method":"GET",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              }
+            ],
+            "url":{
+              "raw":"{{base_url}}/eye/patients/123e4567-e89b-12d3-a456-426614174000/prescriptions",
+              "host":["{{base_url}}"],
+              "path":["eye","patients","123e4567-e89b-12d3-a456-426614174000","prescriptions"]
+            },
+            "description":"Get patient glasses prescriptions"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Get Eye Examination",
+          "request":{
+            "method":"GET",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              }
+            ],
+            "url":{
+              "raw":"{{base_url}}/eye/examinations/123e4567-e89b-12d3-a456-426614174001",
+              "host":["{{base_url}}"],
+              "path":["eye","examinations","123e4567-e89b-12d3-a456-426614174001"]
+            },
+            "description":"Get eye examination by ID"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Get Eye Prescription",
+          "request":{
+            "method":"GET",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              }
+            ],
+            "url":{
+              "raw":"{{base_url}}/eye/prescriptions/123e4567-e89b-12d3-a456-426614174001",
+              "host":["{{base_url}}"],
+              "path":["eye","prescriptions","123e4567-e89b-12d3-a456-426614174001"]
+            },
+            "description":"Get glasses prescription by ID"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Create Visual Field Test",
+          "request":{
+            "method":"POST",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              },
+              {
+                "key":"Content-Type",
+                "value":"application/json"
+              }
+            ],
+            "body":{
+              "mode":"raw",
+              "raw":"{\n    \"patient_id\":\"123e4567-e89b-12d3-a456-426614174000\",\n    \"eye\":\"Right\",\n    \"mean_deviation\":-2.5,\n    \"pattern_standard_deviation\":1.3\n}"
+            },
+            "url":{
+              "raw":"{{base_url}}/eye/visual-field-tests",
+              "host":["{{base_url}}"],
+              "path":["eye","visual-field-tests"]
+            },
+            "description":"Create visual field test"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Calculate Spherical Equivalent",
+          "request":{
+            "method":"POST",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              },
+              {
+                "key":"Content-Type",
+                "value":"application/json"
+              }
+            ],
+            "body":{
+              "mode":"raw",
+              "raw":"{\n    \"sphere_right\":-1.50,\n    \"cylinder_right\":-0.50,\n    \"sphere_left\":-1.75,\n    \"cylinder_left\":-0.50\n}"
+            },
+            "url":{
+              "raw":"{{base_url}}/eye/calculate/spherical-equivalent",
+              "host":["{{base_url}}"],
+              "path":["eye","calculate","spherical-equivalent"]
+            },
+            "description":"Calculate spherical equivalent"
+          },
+          "response":[ ]
+        },
+        {
+          "name":"Convert Visual Acuity",
+          "request":{
+            "method":"POST",
+            "header":[
+              {
+                "key":"Authorization",
+                "value":"Bearer {{access_token}}"
+              },
+              {
+                "key":"Content-Type",
+                "value":"application/json"
+              }
+            ],
+            "body":{
+              "mode":"raw",
+              "raw":"{\n    \"value\":\"6/12\",\n    \"from_format\":\"snellen\",\n    \"to_format\":\"decimal\"\n}"
+            },
+            "url":{
+              "raw":"{{base_url}}/eye/convert/visual-acuity",
+              "host":["{{base_url}}"],
+              "path":["eye","convert","visual-acuity"]
+            },
+            "description":"Convert visual acuity"
+          },
+          "response":[ ]
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "description": "Reporting endpoints",
+      "item": [
+        {
+          "name": "Get Report Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/templates",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "templates"]
+            },
+            "description": "Get available report templates"
+          },
+          "response": []
+        },
+        {
+          "name": "Patient Demographics Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/patient-demographics?start_date=2024-01-01&end_date=2024-01-31&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "patient-demographics"],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-01-31"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            },
+            "description": "Generate patient demographics report"
+          },
+          "response": []
+        },
+        {
+          "name": "Clinical Activity Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/clinical-activity?start_date=2024-01-01&end_date=2024-01-31&format=excel",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "clinical-activity"],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-01-31"
+                },
+                {
+                  "key": "format",
+                  "value": "excel"
+                }
+              ]
+            },
+            "description": "Generate clinical activity report"
+          },
+          "response": []
+        },
+        {
+          "name": "Financial Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/financial?start_date=2024-01-01&end_date=2024-01-31&format=pdf",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "financial"],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-01-31"
+                },
+                {
+                  "key": "format",
+                  "value": "pdf"
+                }
+              ]
+            },
+            "description": "Generate financial report"
+          },
+          "response": []
+        },
+        {
+          "name": "Schedule Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"report_type\": \"financial\",\n    \"schedule\": {\n        \"cron\": \"0 9 1 * *\",\n        \"frequency\": \"monthly\"\n    },\n    \"recipients\": [\"finance@hospital.gov.gh\"],\n    \"format\": \"pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reports/schedule",
+              "host": ["{{base_url}}"],
+              "path": ["reports", "schedule"]
+            },
+            "description": "Schedule automated report"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "description": "Inventory management endpoints",
+      "item": [
+        {
+          "name": "Get Inventory Batches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/batches?expiring_soon=true",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "batches"],
+              "query": [
+                {
+                  "key": "expiring_soon",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get inventory batches"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Inventory Batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"item_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"batch_number\": \"BATCH240201\",\n    \"expiry_date\": \"2025-01-31\",\n    \"quantity_on_hand\": 100,\n    \"unit_cost\": 25.50,\n    \"location\": \"Shelf B2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/batches",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "batches"]
+            },
+            "description": "Add inventory batch"
+          },
+          "response": []
+        },
+        {
+          "name": "Record Stock Movement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"item_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"batch_id\": \"123e4567-e89b-12d3-a456-426614174001\",\n    \"movement_type\": \"Issue\",\n    \"quantity\": 10,\n    \"notes\": \"Issued to lab\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/movements",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "movements"]
+            },
+            "description": "Record stock movement"
+          },
+          "response": []
+        },
+        {
+          "name": "Perform Stock Take",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"items\": [\n        {\n            \"batch_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"counted_quantity\": 95\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/stock-take",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "stock-take"]
+            },
+            "description": "Perform stock take"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inventory Value",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/reports/value",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "reports", "value"]
+            },
+            "description": "Get inventory value report"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Items",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/items/search?q=chair","host":["{{base_url}}"],"path":["inventory","items","search"],"query":[{"key":"q","value":"chair"}]},
+            "description":"Search inventory items"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Items",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/items","host":["{{base_url}}"],"path":["inventory","items"]},
+            "description":"List inventory items"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Item By ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/items/{{id}}","host":["{{base_url}}"],"path":["inventory","items","{{id}}"]},
+            "description":"Get a single inventory item"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Batch",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/batches/{{id}}","host":["{{base_url}}"],"path":["inventory","batches","{{id}}"]},
+            "description":"Update inventory batch"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Batch",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/batches/{{id}}","host":["{{base_url}}"],"path":["inventory","batches","{{id}}"]},
+            "description":"Delete an inventory batch"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movements",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/movements","host":["{{base_url}}"],"path":["inventory","movements"]},
+            "description":"List inventory stock movements"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/suppliers","host":["{{base_url}}"],"path":["inventory","suppliers"]},
+            "description":"List suppliers"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Supplier",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"},{"key":"Content-Type","value":"application/json"}],
+            "url": {"raw":"{{base_url}}/inventory/suppliers","host":["{{base_url}}"],"path":["inventory","suppliers"]},
+            "description":"Add a new supplier"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Purchase Order",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"},{"key":"Content-Type","value":"application/json"}],
+            "url": {"raw":"{{base_url}}/inventory/purchase-orders","host":["{{base_url}}"],"path":["inventory","purchase-orders"]},
+            "description":"Create a purchase order"
+          },
+          "response": []
+        },
+        {
+          "name": "Receive Purchase Order",
+          "request": {
+            "method": "PUT",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/purchase-orders/{{id}}/receive","host":["{{base_url}}"],"path":["inventory","purchase-orders","{{id}}","receive"]},
+            "description":"Mark purchase order as received"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Reports By Category",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/reports/by-category","host":["{{base_url}}"],"path":["inventory","reports","by-category"]},
+            "description":"Get inventory reports by category"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Expiry Reports",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/reports/expiry","host":["{{base_url}}"],"path":["inventory","reports","expiry"]},
+            "description":"Get expiry report"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movement Reports",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/inventory/reports/movements","host":["{{base_url}}"],"path":["inventory","reports","movements"]},
+            "description":"Get movement report"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "description": "Dashboard endpoints",
+      "item": [
+        {
+          "name": "Executive Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/executive",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "executive"]
+            },
+            "description": "Get executive dashboard data"
+          },
+          "response": []
+        },
+        {
+          "name": "Clinical Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/clinical",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "clinical"]
+            },
+            "description": "Get clinical dashboard data"
+          },
+          "response": []
+        },
+        {
+          "name": "Financial Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/financial",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "financial"]
+            },
+            "description": "Get financial dashboard data"
+          },
+          "response": []
+        },
+        {
+          "name": "My Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/my",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "my"]
+            },
+            "description": "Get user-specific dashboard"
+          },
+          "response": []
+        },
+        {
+          "name": "Real-time Updates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/realtime",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "realtime"]
+            },
+            "description": "Get real-time updates"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Administrative endpoints",
+      "item": [
+        {
+          "name": "Get System Settings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/settings",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "settings"]
+            },
+            "description": "Get system settings"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"settings\": [\n        {\n            \"key\": \"appointment_reminder_hours\",\n            \"value\": \"24\",\n            \"category\": \"appointments\"\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/settings",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "settings"]
+            },
+            "description": "Update system settings"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/roles",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "roles"]
+            },
+            "description": "Get all roles"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"role_code\": \"NEW_ROLE\",\n    \"role_name\": \"New Role\",\n    \"description\": \"Description of new role\",\n    \"permissions\": [\"perm1\", \"perm2\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/roles",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "roles"]
+            },
+            "description": "Create new role"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Departments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/departments",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "departments"]
+            },
+            "description": "List departments (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"department_code\": \"CARDIO\",\n    \"department_name\": \"Cardiology\",\n    \"department_type\": \"Clinical\",\n    \"facility_id\": \"{{facility_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/departments",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "departments"]
+            },
+            "description": "Create department (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"department_name\": \"New Name\",\n    \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/departments/{{dept_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "departments", "{{dept_id}}"]
+            },
+            "description": "Update department (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Department",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/departments/{{dept_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "departments", "{{dept_id}}"]
+            },
+            "description": "Deactivate department (admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/audit-logs?from_date=2024-01-01&to_date=2024-01-31",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "audit-logs"],
+              "query": [
+                {
+                  "key": "from_date",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "to_date",
+                  "value": "2024-01-31"
+                }
+              ]
+            },
+            "description": "Get audit logs"
+          },
+          "response": []
+        },
+        {
+          "name": "Get System Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/health",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "health"]
+            },
+            "description": "Get system health status"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Backup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/backup",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "backup"]
+            },
+            "description": "Create system backup"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Backups",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/backups",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "backups"]
+            },
+            "description": "Get list of backups"
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Cache",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"pattern\": \"patients:*\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/clear-cache",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "clear-cache"]
+            },
+            "description": "Clear system cache"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"}
+            ],
+            "url": {"raw":"{{base_url}}/admin/logs","host":["{{base_url}}"],"path":["admin","logs"]},
+            "description":"Retrieve application logs"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Config",
+          "request": {
+            "method": "GET",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/admin/config","host":["{{base_url}}"],"path":["admin","config"]},
+            "description":"Retrieve runtime configuration"
+          },
+          "response": []
+        },
+        {
+          "name": "Run Migration",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/admin/migrate","host":["{{base_url}}"],"path":["admin","migrate"]},
+            "description":"Trigger database migration"
+          },
+          "response": []
+        },
+        {
+          "name": "Cleanup",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/admin/cleanup","host":["{{base_url}}"],"path":["admin","cleanup"]},
+            "description":"Perform system cleanup tasks"
+          },
+          "response": []
+        },
+        {
+          "name": "Send Test Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n    \"to\": \"test@hospital.gov.gh\", \"subject\": \"Test\", \"message\": \"Hello\"\n}"},
+            "url": {"raw":"{{base_url}}/admin/test-email","host":["{{base_url}}"],"path":["admin","test-email"]},
+            "description":"Send a test email"
+          },
+          "response": []
+        },
+        {
+          "name": "Send Test SMS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"Authorization","value":"Bearer {{access_token}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "body": {"mode":"raw","raw":"{\n    \"to\": \"0244123456\", \"message\": \"Test SMS\"\n}"},
+            "url": {"raw":"{{base_url}}/admin/test-sms","host":["{{base_url}}"],"path":["admin","test-sms"]},
+            "description":"Send a test SMS"
+          },
+          "response": []
+        },
+        {
+          "name": "Set Maintenance Mode",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Authorization","value":"Bearer {{access_token}}"}],
+            "url": {"raw":"{{base_url}}/admin/maintenance","host":["{{base_url}}"],"path":["admin","maintenance"]},
+            "description":"Toggle maintenance mode"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Branch Management",
+      "description": "Multi-branch facility management. Only SUPER_ADMIN and SYS_ADMIN can create/modify branches. All staff can view branches of the facility they belong to.",
+      "item": [
+        {
+          "name": "Get Facility Branch Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches/overview",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "overview"]
+            },
+            "description": "Facility-wide summary: total branches, active staff count, unassigned staff, total bed capacity. Requires SUPER_ADMIN or SYS_ADMIN."
+          },
+          "response": []
+        },
+        {
+          "name": "List Branches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches?status=Active&page=1&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["branches"],
+              "query": [
+                {"key": "status", "value": "Active", "description": "Active | Inactive | Suspended | Under Construction"},
+                {"key": "branch_type", "value": "", "disabled": true, "description": "Main | Annex | Outreach | Satellite | Specialist | Other"},
+                {"key": "search", "value": "", "disabled": true, "description": "Search by name, code or city"},
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "50"}
+              ]
+            },
+            "description": "List all branches for the authenticated user's facility. Requires VIEW_ALL_BRANCHES permission."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branch_code\": \"BR-003\",\n  \"branch_name\": \"East Annex Clinic\",\n  \"branch_type\": \"Annex\",\n  \"address\": \"45 Independence Avenue\",\n  \"city\": \"Accra\",\n  \"region\": \"Greater Accra\",\n  \"country\": \"Ghana\",\n  \"phone_primary\": \"+233-30-123-4567\",\n  \"email\": \"east.annex@hospital.gov.gh\",\n  \"bed_capacity\": 30,\n  \"services_offered\": [\"Outpatient\", \"Pharmacy\", \"Laboratory\"],\n  \"operational_hours\": {\n    \"monday\":    {\"open\": \"08:00\", \"close\": \"17:00\"},\n    \"tuesday\":   {\"open\": \"08:00\", \"close\": \"17:00\"},\n    \"wednesday\": {\"open\": \"08:00\", \"close\": \"17:00\"},\n    \"thursday\":  {\"open\": \"08:00\", \"close\": \"17:00\"},\n    \"friday\":    {\"open\": \"08:00\", \"close\": \"15:00\"},\n    \"saturday\":  {\"open\": \"09:00\", \"close\": \"13:00\"},\n    \"sunday\":    null\n  },\n  \"notes\": \"Satellite branch serving the eastern district.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches",
+              "host": ["{{base_url}}"],
+              "path": ["branches"]
+            },
+            "description": "Create a new branch under the authenticated user's facility. Requires SUPER_ADMIN or SYS_ADMIN with MANAGE_BRANCHES permission."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Branch by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}"]
+            },
+            "description": "Get a single branch record including its departments."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Branch",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branch_name\": \"East Annex Clinic (Updated)\",\n  \"phone_primary\": \"+233-30-987-6543\",\n  \"bed_capacity\": 50,\n  \"services_offered\": [\"Outpatient\", \"Pharmacy\", \"Laboratory\", \"Dental\"],\n  \"notes\": \"Expanded with dental unit.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}"]
+            },
+            "description": "Update branch details. All fields are optional (PATCH semantics on PUT). Requires SUPER_ADMIN or SYS_ADMIN."
+          },
+          "response": []
+        },
+        {
+          "name": "Set Branch Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Inactive\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}", "status"]
+            },
+            "description": "Change branch operational status. Valid values: Active | Inactive | Suspended | Under Construction. Requires SUPER_ADMIN or SYS_ADMIN."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete (Deactivate) Branch",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}"]
+            },
+            "description": "Soft-deletes a branch (sets status to Inactive). Will fail with 409 if the branch still has active staff. Requires SUPER_ADMIN or SYS_ADMIN."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Branch Users (Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}/users?user_status=Active&page=1&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}", "users"],
+              "query": [
+                {"key": "user_status", "value": "Active", "description": "Active | Inactive | Suspended | Locked"},
+                {"key": "search", "value": "", "disabled": true, "description": "Search by name, employee ID or email"},
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "50"}
+              ]
+            },
+            "description": "List all staff assigned to a specific branch. Requires VIEW_ALL_BRANCHES permission."
+          },
+          "response": []
+        },
+        {
+          "name": "Assign User to Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{user_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}/assign-user",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}", "assign-user"]
+            },
+            "description": "Assign (or transfer) a single staff member to this branch. Requires ASSIGN_BRANCH_USERS permission."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Assign Users to Branch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_ids\": [\n    \"{{user_id_1}}\",\n    \"{{user_id_2}}\",\n    \"{{user_id_3}}\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}/bulk-assign-users",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}", "bulk-assign-users"]
+            },
+            "description": "Assign multiple staff members to a branch in a single request. Requires ASSIGN_BRANCH_USERS permission."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Branch Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{access_token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}/stats?period=30",
+              "host": ["{{base_url}}"],
+              "path": ["branches", "{{branch_id}}", "stats"],
+              "query": [
+                {"key": "period", "value": "30", "description": "Look-back period in days (1–365, default 30)"}
+              ]
+            },
+            "description": "Returns staff counts, appointment stats and patient visits for the specified branch over the given period. Requires VIEW_ALL_BRANCHES permission."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "{{api_url}}/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "branch_id",
+      "value": "",
+      "type": "string",
+      "description": "UUID of the target branch – set after calling Create Branch"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string",
+      "description": "UUID of a user to assign to a branch"
+    },
+    {
+      "key": "user_id_1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id_2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id_3",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

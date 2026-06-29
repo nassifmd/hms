@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Security Alert</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Security alert: {{alertType}} detected on your account.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f0f4f8;padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;" role="presentation">
+
+          <!-- Header (red for alert) -->
+          <tr>
+            <td style="background:#7f1d1d;padding:28px 40px;border-radius:8px 8px 0 0;text-align:center;">
+              <p style="margin:0;color:#fca5a5;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">Security Alert</p>
+              <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;">{{alertType}}</h1>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:40px;">
+              <p style="margin:0 0 16px;font-size:15px;color:#2d3748;line-height:1.6;">Hello <strong>{{name}}</strong>,</p>
+              <p style="margin:0 0 24px;font-size:15px;color:#4a5568;line-height:1.6;">
+                We detected the following security event on your account. Please review the details and take action if this was not you.
+              </p>
+
+              <!-- Event Detail Card -->
+              <div style="background:#fff5f5;border:1px solid #fed7d7;border-left:4px solid #e53e3e;border-radius:6px;padding:20px 24px;margin-bottom:24px;">
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td width="50%" style="vertical-align:top;padding-right:16px;padding-bottom:14px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c53030;">Event</p>
+                      <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:#1a202c;">{{alertType}}</p>
+                    </td>
+                    <td width="50%" style="vertical-align:top;padding-bottom:14px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c53030;">Time</p>
+                      <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:#1a202c;">{{time}}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="border-top:1px solid #fed7d7;padding-top:14px;padding-bottom:14px;padding-right:16px;" width="50%">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c53030;">IP Address</p>
+                      <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:#1a202c;font-family:'Courier New',monospace;">{{ipAddress}}</p>
+                    </td>
+                    {{#if device}}
+                    <td style="border-top:1px solid #fed7d7;padding-top:14px;padding-bottom:14px;" width="50%">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c53030;">Device</p>
+                      <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:#1a202c;">{{device}}</p>
+                    </td>
+                    {{/if}}
+                  </tr>
+                  {{#if location}}
+                  <tr>
+                    <td colspan="2" style="border-top:1px solid #fed7d7;padding-top:14px;">
+                      <p style="margin:0;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c53030;">Location</p>
+                      <p style="margin:4px 0 0;font-size:14px;font-weight:600;color:#1a202c;">{{location}}</p>
+                    </td>
+                  </tr>
+                  {{/if}}
+                </table>
+              </div>
+
+              <!-- Action warning -->
+              <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:14px 16px;margin-bottom:24px;">
+                <p style="margin:0;font-size:13px;color:#92400e;line-height:1.6;">
+                  <strong>⚠ Wasn't you?</strong> If you did not perform this action, please contact your system administrator immediately and change your password.
+                  {{#if supportEmail}}<a href="mailto:{{supportEmail}}" style="color:#92400e;font-weight:600;">{{supportEmail}}</a>{{/if}}
+                  {{#if supportPhone}} | <strong>{{supportPhone}}</strong>{{/if}}
+                </p>
+              </div>
+
+              <p style="margin:0;font-size:14px;color:#718096;line-height:1.6;">If this was you, no action is required.</p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#2d3748;padding:24px 40px;border-radius:0 0 8px 8px;text-align:center;">
+              <p style="margin:0;color:#a0aec0;font-size:12px;line-height:1.6;">
+                This is an automated security notification — please do not reply.<br/>
+                {{#if supportEmail}}Contact <a href="mailto:{{supportEmail}}" style="color:#93c5fd;text-decoration:none;">{{supportEmail}}</a> if you need assistance.{{/if}}
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

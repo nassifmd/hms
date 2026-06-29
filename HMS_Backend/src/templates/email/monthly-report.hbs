@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Monthly Report — {{facilityName}} — {{month}} {{year}}</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">Monthly performance report for {{facilityName}} — {{month}} {{year}}.</div>
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f0f4f8;padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;" role="presentation">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#1a3a5c;padding:32px 40px;border-radius:8px 8px 0 0;text-align:center;">
+              <p style="margin:0;color:#93c5fd;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">{{facilityName}}</p>
+              <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;">Monthly Performance Report</h1>
+              <p style="margin:8px 0 0;color:#bfdbfe;font-size:14px;font-weight:600;">{{month}} {{year}}</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#ffffff;padding:40px;">
+
+              <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.6;">
+                Please find the monthly performance summary for <strong>{{facilityName}}</strong> for <strong>{{month}} {{year}}</strong> below.
+              </p>
+
+              <!-- Clinical Stats -->
+              {{#if clinical}}
+              <p style="margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#1a202c;border-bottom:2px solid #e2e8f0;padding-bottom:8px;">Clinical Activity</p>
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:28px;">
+                <tr>
+                  {{#if clinical.total_visits}}
+                  <td width="25%" style="text-align:center;padding:16px 8px;background:#f0f9ff;border-radius:6px;margin-right:8px;">
+                    <p style="margin:0;font-size:26px;font-weight:700;color:#1a3a5c;">{{clinical.total_visits}}</p>
+                    <p style="margin:4px 0 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Total Visits</p>
+                  </td>
+                  {{/if}}
+                  {{#if clinical.outpatient_visits}}
+                  <td width="4%"></td>
+                  <td width="25%" style="text-align:center;padding:16px 8px;background:#f0fdf4;border-radius:6px;">
+                    <p style="margin:0;font-size:26px;font-weight:700;color:#276749;">{{clinical.outpatient_visits}}</p>
+                    <p style="margin:4px 0 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Outpatient</p>
+                  </td>
+                  {{/if}}
+                  {{#if clinical.inpatient_visits}}
+                  <td width="4%"></td>
+                  <td width="25%" style="text-align:center;padding:16px 8px;background:#fafaf9;border-radius:6px;">
+                    <p style="margin:0;font-size:26px;font-weight:700;color:#4a5568;">{{clinical.inpatient_visits}}</p>
+                    <p style="margin:4px 0 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Inpatient</p>
+                  </td>
+                  {{/if}}
+                  {{#if clinical.emergency_visits}}
+                  <td width="4%"></td>
+                  <td width="25%" style="text-align:center;padding:16px 8px;background:#fff5f5;border-radius:6px;">
+                    <p style="margin:0;font-size:26px;font-weight:700;color:#c53030;">{{clinical.emergency_visits}}</p>
+                    <p style="margin:4px 0 0;font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Emergency</p>
+                  </td>
+                  {{/if}}
+                </tr>
+              </table>
+              {{/if}}
+
+              <!-- Financial Stats -->
+              {{#if financials}}
+              <p style="margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#1a202c;border-bottom:2px solid #e2e8f0;padding-bottom:8px;">Financial Summary</p>
+              <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;padding:20px 24px;margin-bottom:28px;">
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  {{#if financials.total_revenue}}
+                  <tr>
+                    <td style="padding:8px 0;font-size:14px;color:#4a5568;border-bottom:1px solid #edf2f7;">Total Revenue</td>
+                    <td style="padding:8px 0;font-size:14px;font-weight:700;color:#276749;text-align:right;border-bottom:1px solid #edf2f7;">{{currency financials.total_revenue}}</td>
+                  </tr>
+                  {{/if}}
+                  {{#if financials.transaction_count}}
+                  <tr>
+                    <td style="padding:8px 0;font-size:14px;color:#4a5568;border-bottom:1px solid #edf2f7;">Transactions</td>
+                    <td style="padding:8px 0;font-size:14px;font-weight:600;color:#1a202c;text-align:right;border-bottom:1px solid #edf2f7;">{{financials.transaction_count}}</td>
+                  </tr>
+                  {{/if}}
+                  {{#if financials.outstanding}}
+                  <tr>
+                    <td style="padding:8px 0;font-size:14px;color:#4a5568;">Outstanding Balance</td>
+                    <td style="padding:8px 0;font-size:14px;font-weight:600;color:#c53030;text-align:right;">{{currency financials.outstanding}}</td>
+                  </tr>
+                  {{/if}}
+                </table>
+              </div>
+              {{/if}}
+
+              <!-- General Stats -->
+              {{#if stats}}
+              <p style="margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#1a202c;border-bottom:2px solid #e2e8f0;padding-bottom:8px;">Key Indicators</p>
+              <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;padding:20px 24px;margin-bottom:28px;">
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  {{#each stats}}
+                  <tr>
+                    <td style="padding:8px 0;font-size:14px;color:#4a5568;border-bottom:1px solid #edf2f7;">{{titleCase @key}}</td>
+                    <td style="padding:8px 0;font-size:14px;font-weight:600;color:#1a202c;text-align:right;border-bottom:1px solid #edf2f7;">{{this}}</td>
+                  </tr>
+                  {{/each}}
+                </table>
+              </div>
+              {{/if}}
+
+              <!-- Action Buttons -->
+              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td align="center">
+                    <a href="{{reportLink}}"
+                       style="display:inline-block;background:#1a3a5c;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:6px;margin:4px 6px;">
+                      View Full Report
+                    </a>
+                    {{#if downloadLink}}
+                    <a href="{{downloadLink}}"
+                       style="display:inline-block;background:#276749;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:6px;margin:4px 6px;">
+                      Download Report
+                    </a>
+                    {{/if}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#2d3748;padding:24px 40px;border-radius:0 0 8px 8px;text-align:center;">
+              <p style="margin:0;color:#a0aec0;font-size:12px;line-height:1.6;">
+                © {{facilityName}}. All rights reserved.<br/>
+                This report was automatically generated — please do not reply.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
