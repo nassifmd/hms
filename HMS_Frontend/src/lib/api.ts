@@ -1,74 +1,84 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? '/api/v1'
+const BASE_URL = import.meta.env.VITE_API_URL ?? "/api/v1";
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { "Content-Type": "application/json" },
   timeout: 30_000,
-})
+});
 
 // ── Request interceptor: attach access token ──────────────────
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('accessToken')
+    const token = localStorage.getItem("accessToken");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return config
+    return config;
   },
   (error) => Promise.reject(error),
-)
+);
 
 // ── Response interceptor: handle 401 & refresh ────────────────
-let isRefreshing = false
-let failedQueue: { resolve: (v: string) => void; reject: (e: unknown) => void }[] = []
+let isRefreshing = false;
+let failedQueue: {
+  resolve: (v: string) => void;
+  reject: (e: unknown) => void;
+}[] = [];
 
 const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((p) => (error ? p.reject(error) : p.resolve(token!)))
-  failedQueue = []
-}
+  failedQueue.forEach((p) => (error ? p.reject(error) : p.resolve(token!)));
+  failedQueue = [];
+};
 
 api.interceptors.response.use(
   (res) => res,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean }
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject })
+          failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`
-            return api(originalRequest)
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
           })
-          .catch((err) => Promise.reject(err))
+          .catch((err) => Promise.reject(err));
       }
 
-      originalRequest._retry = true
-      isRefreshing = true
+      originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken')
-        const { data } = await axios.post(`${BASE_URL}/auth/refresh-token`, { refreshToken })
-        const newToken = data.data.accessToken
-        localStorage.setItem('accessToken', newToken)
-        api.defaults.headers.common.Authorization = `Bearer ${newToken}`
-        processQueue(null, newToken)
-        return api(originalRequest)
+        const refreshToken = localStorage.getItem("refreshToken");
+        const { data } = await axios.post(`${BASE_URL}/auth/refresh-token`, {
+          refreshToken,
+        });
+        const newToken = data.data.accessToken;
+        localStorage.setItem("accessToken", newToken);
+        api.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+        processQueue(null, newToken);
+        return api(originalRequest);
       } catch (err) {
-        processQueue(err, null)
-        localStorage.clear()
-        window.location.href = '/login'
-        return Promise.reject(err)
+        processQueue(err, null);
+        localStorage.clear();
+        // Only redirect if not already on the login page to avoid reload loop
+        if (!window.location.pathname.startsWith("/login")) {
+          window.location.href = "/login";
+        }
+        return Promise.reject(err);
       } finally {
-        isRefreshing = false
+        isRefreshing = false;
       }
     }
 
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
 
-export default api
+export default api;
