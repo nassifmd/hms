@@ -10,12 +10,15 @@ class InMemoryRedis {
     this.channels = new Map(); // channel -> [callbacks]
     this.rateWindows = new Map(); // key -> [timestamps]
 
-    // client and subscriber compatibility with original code
+    // client and subscriber compatibility with original code.
+    // multi() is required by rateLimiter.js.
+    const self = this;
     this.client = {
       status: "ready",
       _inMemory: true,
       ping: async () => "PONG",
       quit: async () => true,
+      multi: () => self.multi(),
     };
     this.subscriber = { quit: async () => true };
 
