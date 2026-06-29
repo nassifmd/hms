@@ -136,11 +136,6 @@ const errorHandler = (err, req, res, next) => {
     error = new AppError(err.message, 400, "VALIDATION_ERROR");
   }
 
-  // Rate limit errors
-  if (err.name === "RateLimitError") {
-    error = new AppError("Too many requests", 429, "RATE_LIMIT_EXCEEDED");
-  }
-
   // Send response
   res.status(error.statusCode).json({
     success: false,

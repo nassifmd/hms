@@ -11,7 +11,6 @@ class InMemoryRedis {
     this.rateWindows = new Map(); // key -> [timestamps]
 
     // client and subscriber compatibility with original code.
-    // multi() is required by rateLimiter.js.
     const self = this;
     this.client = {
       status: "ready",

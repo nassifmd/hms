@@ -2,18 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
 const authController = require("../../controllers/authController");
-const { authenticateToken, rateLimiter } = require("../../middleware/auth");
-const {
-  login: loginRateLimiter,
-  sensitive: sensitiveRateLimiter,
-  api: apiRateLimiter,
-} = require("../../middleware/rateLimiter");
-
-// Login rate limiter - stricter limits
-const loginLimiter = rateLimiter({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // increased for testing
-});
+const { authenticateToken } = require("../../middleware/auth");
 
 /**
  * @route   POST /api/v1/auth/login
@@ -22,7 +11,6 @@ const loginLimiter = rateLimiter({
  */
 router.post(
   "/login",
-  loginLimiter,
   [
     body("email")
       .notEmpty()
@@ -37,11 +25,7 @@ router.post(
  * @desc    Refresh access token
  * @access  Public
  */
-router.post(
-  "/refresh-token",
-  sensitiveRateLimiter,
-  authController.refreshToken
-);
+router.post("/refresh-token", authController.refreshToken);
 
 /**
  * @route   POST /api/v1/auth/logout
@@ -76,7 +60,6 @@ router.post(
  */
 router.post(
   "/forgot-password",
-  sensitiveRateLimiter,
   [body("email").isEmail().withMessage("Please provide a valid email")],
   authController.forgotPassword
 );
@@ -88,7 +71,6 @@ router.post(
  */
 router.post(
   "/reset-password",
-  sensitiveRateLimiter,
   [
     body("token").notEmpty().withMessage("Reset token is required"),
     body("newPassword")
@@ -105,7 +87,6 @@ router.post(
  */
 router.post(
   "/send-otp",
-  apiRateLimiter,
   [
     body("phone").optional().isMobilePhone("any"),
     body("email").optional().isEmail(),
