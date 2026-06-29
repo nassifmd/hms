@@ -250,6 +250,57 @@ class InMemoryRedis {
     return true;
   }
 
+  // Stub for redis.client.multi() used by the rate limiter.
+  // Returns a chainable mock that records operations and replays
+  // them individually on exec().
+  multi() {
+    const self = this;
+    const ops = [];
+    const mock = {
+      zremrangebyscore(key, min, max) {
+        ops.push({ cmd: "zremrangebyscore", args: [key, min, max] });
+        return mock;
+      },
+      zadd(key, score, member) {
+        ops.push({ cmd: "zadd", args: [key, score, member] });
+        return mock;
+      },
+      zcard(key) {
+        ops.push({ cmd: "zcard", args: [key] });
+        return mock;
+      },
+      expire(key, ttl) {
+        ops.push({ cmd: "expire", args: [key, ttl] });
+        return mock;
+      },
+      async exec() {
+        const results = [];
+        for (const op of ops) {
+          try {
+            if (op.cmd === "zremrangebyscore") {
+              // Not implemented for in-memory; treat as no-op
+              results.push([null, 0]);
+            } else if (op.cmd === "zadd") {
+              // Not implemented; treat as no-op
+              results.push([null, 1]);
+            } else if (op.cmd === "zcard") {
+              results.push([null, 1]);
+            } else if (op.cmd === "expire") {
+              await self.expire(op.args[0], op.args[1]);
+              results.push([null, true]);
+            } else {
+              results.push([null, null]);
+            }
+          } catch (err) {
+            results.push([err, null]);
+          }
+        }
+        return results;
+      },
+    };
+    return mock;
+  }
+
   // Simple token-bucket / sliding-window rate limit emulation
   async rateLimit(key, limit, windowSec) {
     const now = Date.now();
