@@ -378,7 +378,12 @@ export default function AdminPage() {
       toast.success("User account unlocked");
       qc.invalidateQueries({ queryKey: ["admin", "users"] });
     },
-    onError: () => toast.error("Failed to unlock user"),
+    onError: (err: unknown) => {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message ?? "Failed to unlock user";
+      toast.error(msg);
+    },
   });
 
   const assignRoleMutation = useMutation({
