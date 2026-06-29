@@ -1147,6 +1147,48 @@ class AdminController {
    * @route   POST /api/v1/admin/modules/activate
    * @access  Private (SYS_ADMIN)
    */
+  /**
+   * @desc    Unlock a locked user account (reset account_locked and login_attempts)
+   * @route   POST /api/v1/admin/users/:id/unlock
+   * @access  Private (SYS_ADMIN)
+   */
+  async unlockUser(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const result = await db.query(
+        `UPDATE users SET account_locked = false, login_attempts = 0 WHERE id = $1 RETURNING id, email, account_locked, login_attempts`,
+        [id]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: { code: "USER_NOT_FOUND", message: "User not found" },
+        });
+      }
+
+      await Audit.logAction(req.user.userId, "USER_UNLOCKED", {
+        target_user_id: id,
+        facility_id: req.user.facilityId,
+        ip_address: req.ip,
+        user_agent: req.get("user-agent"),
+      });
+
+      // Clear user cache
+      await redis.del(`user:${id}`);
+      await redis.clearPattern(`users:*`);
+
+      res.json({
+        success: true,
+        data: result.rows[0],
+        message: "User account unlocked successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async activateModule(req, res, next) {
     try {
       const { module_code, license_key } = req.body;

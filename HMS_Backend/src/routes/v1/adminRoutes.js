@@ -203,6 +203,19 @@ router.get(
 );
 
 /**
+ * @route   POST /api/v1/admin/users/:id/unlock
+ * @desc    Unlock a locked user account
+ * @access  Private (SYS_ADMIN only)
+ */
+router.post(
+  "/users/:id/unlock",
+  hasPermission("UPDATE_USER"),
+  param("id").isUUID(),
+  validate,
+  adminController.unlockUser
+);
+
+/**
  * @route   GET /api/v1/admin/health
  * @desc    Get system health status
  * @access  Private (Admin only)
