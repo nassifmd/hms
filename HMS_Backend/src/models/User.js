@@ -610,7 +610,7 @@ class User {
       JOIN user_roles ur ON u.id = ur.user_id
       JOIN roles r ON ur.role_id = r.id
       WHERE u.department_id = $1
-        AND r.role_code IN ('DOCTOR', 'MED_OFFICER', 'DENTIST', 'OPTOMETRIST', 'OPHTHALMOLOGIST')
+        AND r.role_code IN ('DOCTOR', 'MED_OFFICER', 'DENTIST', 'OPTOMETRIST', 'OPHTHALMOLOGIST', 'DENTAL_SURGEON', 'DENTAL_TECH')
         AND u.user_status = 'Active'
       ORDER BY u.first_name
     `,
@@ -631,7 +631,7 @@ class User {
       FROM users u
       JOIN user_roles ur ON u.id = ur.user_id
       JOIN roles r ON ur.role_id = r.id
-      WHERE r.role_code IN ('DOCTOR', 'MED_OFFICER', 'DENTIST', 'OPTOMETRIST', 'OPHTHALMOLOGIST')
+      WHERE r.role_code IN ('DOCTOR', 'MED_OFFICER', 'DENTIST', 'OPTOMETRIST', 'OPHTHALMOLOGIST', 'DENTAL_SURGEON', 'DENTAL_TECH')
         AND u.user_status = 'Active'
     `;
 
