@@ -48,19 +48,6 @@ class AuthController {
         });
       }
 
-      // Check if account is locked
-      if (user.account_locked) {
-        await Audit.logLogin(user.id, false, req, "Account locked");
-        return res.status(403).json({
-          success: false,
-          error: {
-            code: "ACCOUNT_LOCKED",
-            message:
-              "Your account has been locked. Please contact administrator.",
-          },
-        });
-      }
-
       // Check if user is active
       if (user.user_status !== "Active") {
         await Audit.logLogin(user.id, false, req, "Inactive account");

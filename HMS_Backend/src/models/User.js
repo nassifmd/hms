@@ -469,19 +469,11 @@ class User {
 
   async incrementLoginAttempts() {
     this.login_attempts += 1;
-
-    if (this.login_attempts >= 5) {
-      this.account_locked = true;
-    }
-
-    await db.query(
-      `
-      UPDATE users
-      SET login_attempts = $1, account_locked = $2
-      WHERE id = $3
-    `,
-      [this.login_attempts, this.account_locked, this.id]
-    );
+    // Track failed attempts without locking the account
+    await db.query(`UPDATE users SET login_attempts = $1 WHERE id = $2`, [
+      this.login_attempts,
+      this.id,
+    ]);
   }
 
   async assignRole(roleId, assignedBy) {
