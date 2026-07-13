@@ -197,6 +197,7 @@ router.post(
   [
     body("patient_id").isUUID().withMessage("Valid patient ID is required"),
     body("department_id")
+      .optional({ values: "falsy" })
       .isUUID()
       .withMessage("Valid department ID is required"),
     body("visit_type")

@@ -438,6 +438,7 @@ export default function AppointmentsPage() {
   const [page, setPage] = useState(1);
   const [openVisitAppt, setOpenVisitAppt] = useState<ApptRow | null>(null);
   const [visitType, setVisitType] = useState("Outpatient");
+  const [visitDeptId, setVisitDeptId] = useState("");
   const [cancelAppt, setCancelAppt] = useState<ApptRow | null>(null);
   const [cancelReason, setCancelReason] = useState("");
   const [rescheduleAppt, setRescheduleAppt] = useState<ApptRow | null>(null);
@@ -477,11 +478,17 @@ export default function AppointmentsPage() {
     onError: () => toast.error("Check-in failed"),
   });
 
+  const { data: deptData } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () =>
+      api.get("/users/departments").then((r) => r.data.data ?? r.data),
+  });
+
   const openVisitMutation = useMutation({
     mutationFn: ({ appt, vType }: { appt: ApptRow; vType: string }) =>
       api.post("/clinical/visits", {
         patient_id: appt.patient_id,
-        department_id: appt.department_id,
+        department_id: visitDeptId || appt.department_id,
         visit_type: vType,
         appointment_id: appt.id,
         chief_complaint: appt.reason,
@@ -656,9 +663,10 @@ export default function AppointmentsPage() {
             {canOpenVisit && (
               <button
                 onClick={() => {
-                  setOpenVisitAppt(r);
-                  setVisitType("Outpatient");
-                }}
+                    setOpenVisitAppt(r);
+                    setVisitType("Outpatient");
+                    setVisitDeptId(r.department_id ?? "");
+                  }}
                 className="px-2 py-1 text-xs font-medium rounded-lg bg-green-50 text-green-700 hover:bg-green-100 whitespace-nowrap"
               >
                 Open Visit
@@ -862,6 +870,20 @@ export default function AppointmentsPage() {
                 <option>Inpatient</option>
                 <option>Emergency</option>
                 <option>Review</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Department
+              </label>
+              <select
+                value={visitDeptId}
+                onChange={(e) => setVisitDeptId(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary-500"
+              >
+                {(Array.isArray(deptData) ? deptData : []).map((d: { id: string; department_name: string }) => (
+                  <option key={d.id} value={d.id}>{d.department_name}</option>
+                ))}
               </select>
             </div>
             <div className="flex justify-end gap-2">
