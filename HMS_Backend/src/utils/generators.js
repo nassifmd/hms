@@ -87,11 +87,24 @@ const generatePatientNumber = async (client, facilityId) => {
  */
 const generateVisitNumber = async (client, facilityId) => {
   const year = moment().format("YYYY");
-  // Use a dedicated sequence for fast, non-blocking ID generation
-  const result = await client.query(
-    `SELECT nextval('visit_number_seq') as seq`
-  );
-  const sequence = result.rows[0].seq.toString().padStart(5, "0");
+  let sequence;
+  try {
+    // Use a dedicated sequence for fast, non-blocking ID generation.
+    // This requires the sequence to exist and be synced to the current max.
+    const result = await client.query(
+      `SELECT nextval('visit_number_seq') as seq`
+    );
+    sequence = result.rows[0].seq.toString().padStart(5, "0");
+  } catch {
+    // Fallback: sequence doesn't exist — use MAX(SUBSTRING...)
+    const result = await client.query(
+      `SELECT COALESCE(MAX(CAST(SUBSTRING(visit_number FROM '-(\\d+)$') AS INTEGER)), 0) + 1 as next_seq
+       FROM visits
+       WHERE visit_number LIKE $1`,
+      [`VIS-${year}-%`]
+    );
+    sequence = result.rows[0].next_seq.toString().padStart(5, "0");
+  }
   return `VIS-${year}-${sequence}`;
 };
 
