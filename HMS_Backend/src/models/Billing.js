@@ -1150,6 +1150,135 @@ class Billing {
     return { invoiceId, itemAdded: true };
   }
 
+  /**
+   * Batch-add multiple chargeable items to a patient's invoice in a single transaction.
+   * Eliminates the N+1 query pattern caused by calling addToPatientInvoice() per item.
+   */
+  static async batchAddToPatientInvoice(items, userId) {
+    if (!items || items.length === 0) return [];
+
+    const { facilityId, patientId, visitId } = items[0];
+
+    // Resolve prices for all items (parallelised)
+    const priceResults = await Promise.all(
+      items.map((item) =>
+        item.unitPrice != null
+          ? Promise.resolve({ price: item.unitPrice, service_code: item.itemCode || null, service_name: item.itemName || item.serviceType })
+          : Billing.lookupServicePrice(facilityId, item.serviceType, item.serviceId)
+      )
+    );
+
+    return db.transaction(async (client) => {
+      // Find open invoice for patient+visit
+      const qParams = [patientId, facilityId];
+      let visitClause = '';
+      if (visitId) {
+        qParams.push(visitId);
+        visitClause = `AND (visit_id = $${qParams.length} OR visit_id IS NULL)`;
+      }
+
+      const existingResult = await client.query(`
+        SELECT id FROM invoices
+        WHERE patient_id = $1
+          AND facility_id = $2
+          ${visitClause}
+          AND payment_status IN ('Pending', 'Partially Paid')
+          AND voided = false
+        ORDER BY created_at DESC
+        LIMIT 1
+      `, qParams);
+
+      let invoiceId;
+
+      if (existingResult.rows.length === 0) {
+        // Create a new invoice with all items
+        const newInvoice = await Billing.createInvoice({
+          patient_id: patientId,
+          facility_id: facilityId,
+          visit_id: visitId || null,
+          items: items.map((item, i) => ({
+            item_type: item.serviceType,
+            item_id: item.serviceId || null,
+            item_code: item.itemCode || priceResults[i].service_code,
+            item_name: item.itemName || priceResults[i].service_name,
+            description: item.description || null,
+            quantity: item.quantity || 1,
+            unit_price: parseFloat(priceResults[i].price),
+          })),
+        }, userId);
+        return [newInvoice];
+      }
+
+      invoiceId = existingResult.rows[0].id;
+
+      // Batch INSERT all items into the existing invoice
+      const insertValues = [];
+      const insertParams = [];
+      let paramIdx = 1;
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const priceInfo = priceResults[i];
+        const unitPrice = parseFloat(priceInfo.price);
+        const qty = item.quantity || 1;
+        const itemTotal = qty * unitPrice;
+
+        insertValues.push(`($${paramIdx}, $${paramIdx + 1}, $${paramIdx + 2}, $${paramIdx + 3}, $${paramIdx + 4}, $${paramIdx + 5}, $${paramIdx + 6}, $${paramIdx + 7}, 0, 0, $${paramIdx + 8})`);
+        insertParams.push(
+          invoiceId,
+          item.serviceType,
+          item.serviceId || null,
+          item.itemCode || priceInfo.service_code,
+          item.itemName || priceInfo.service_name,
+          item.description || null,
+          qty,
+          unitPrice,
+          itemTotal
+        );
+        paramIdx += 9;
+      }
+
+      await client.query(`
+        INSERT INTO invoice_items (invoice_id, item_type, item_id, item_code, item_name, description, quantity, unit_price, discount_amount, tax_amount, total_price)
+        VALUES ${insertValues.join(', ')}
+      `, insertParams);
+
+      // Single recalculation of invoice totals
+      const totalsResult = await client.query(`
+        SELECT COALESCE(SUM(total_price), 0) AS new_subtotal
+        FROM invoice_items WHERE invoice_id = $1
+      `, [invoiceId]);
+      const newSubtotal = parseFloat(totalsResult.rows[0].new_subtotal);
+
+      const invResult = await client.query(
+        `SELECT discount_percentage, discount_amount, tax_percentage, tax_amount, amount_paid FROM invoices WHERE id = $1`,
+        [invoiceId]
+      );
+      const inv = invResult.rows[0];
+      const discAmt = inv.discount_percentage
+        ? newSubtotal * parseFloat(inv.discount_percentage) / 100
+        : parseFloat(inv.discount_amount) || 0;
+      const taxAmt = inv.tax_percentage
+        ? (newSubtotal - discAmt) * parseFloat(inv.tax_percentage) / 100
+        : parseFloat(inv.tax_amount) || 0;
+      const newTotal = newSubtotal - discAmt + taxAmt;
+      const amountPaid = parseFloat(inv.amount_paid) || 0;
+      const newBalance = Math.max(0, newTotal - amountPaid);
+
+      let status = 'Pending';
+      if (amountPaid >= newTotal && newTotal > 0) status = 'Paid';
+      else if (amountPaid > 0) status = 'Partially Paid';
+
+      await client.query(`
+        UPDATE invoices
+        SET subtotal = $1, total_amount = $2, balance_due = $3, payment_status = $4, updated_at = NOW()
+        WHERE id = $5
+      `, [newSubtotal, newTotal, newBalance, status, invoiceId]);
+
+      return { invoiceId, itemsAdded: items.length };
+    });
+  }
+
   // ─── Reports ──────────────────────────────────────────────────────────────────
 
   static async getDailyRevenue(facilityId, date) {

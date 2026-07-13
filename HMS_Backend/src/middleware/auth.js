@@ -5,6 +5,10 @@ const logger = require("../config/logger");
 const auth = require("../config/auth");
 const { hasModuleAccess } = require("./moduleAccess");
 
+// Hoisted UUID regex — UUIDs are always lowercase hex, so no 'i' flag needed
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
 /**
  * Authentication middleware to verify JWT token
  */
@@ -52,6 +56,33 @@ const authenticateToken = async (req, res, next) => {
       issuer: "hospital-management-system",
       audience: "hospital-api",
     });
+
+    // ---- Auth context caching ----
+    // Check Redis cache before hitting the DB for roles/permissions.
+    // The cache is invalidated whenever roles/permissions change.
+    try {
+      const cachedAuth = await redis.get(`user_auth:${decoded.userId}`);
+      if (cachedAuth) {
+        const parsed = typeof cachedAuth === "string" ? JSON.parse(cachedAuth) : cachedAuth;
+        req.user = {
+          userId: decoded.userId,
+          employeeId: parsed.employeeId,
+          name: parsed.name,
+          email: parsed.email,
+          facilityId: parsed.facilityId,
+          branchId: parsed.branchId || null,
+          departmentId: parsed.departmentId,
+          roles: parsed.roles,
+          permissions: parsed.permissions,
+          isSuperUser:
+            parsed.roles.includes("SUPER_ADMIN") ||
+            parsed.roles.includes("SYS_ADMIN"),
+        };
+        return next();
+      }
+    } catch (_) {
+      // Cache miss or error – fall through to DB query
+    }
 
     // Get user from database with roles and permissions.
     // Uses a column-safe helper so the server stays functional on installations
@@ -142,8 +173,6 @@ const authenticateToken = async (req, res, next) => {
     // Attach user to request object.
     // FACILITY_ID env var enables single-tenant mode: all requests are pinned to that facility.
     // The value MUST be a valid UUID; placeholders/empty strings fall back to the user's own facility_id.
-    const UUID_REGEX =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     const envFacilityId = process.env.FACILITY_ID;
     const resolvedFacilityId =
       envFacilityId && UUID_REGEX.test(envFacilityId)
@@ -165,6 +194,26 @@ const authenticateToken = async (req, res, next) => {
       permissions: user.rows[0].permissions,
       isSuperUser,
     };
+
+    // Cache the auth context for subsequent requests (TTL: 5 minutes)
+    try {
+      await redis.set(
+        `user_auth:${user.rows[0].id}`,
+        JSON.stringify({
+          employeeId: user.rows[0].employee_id,
+          name: `${user.rows[0].first_name} ${user.rows[0].last_name}`,
+          email: user.rows[0].email,
+          facilityId: resolvedFacilityId,
+          branchId: isSuperUser ? null : user.rows[0].branch_id,
+          departmentId: user.rows[0].department_id,
+          roles: user.rows[0].roles,
+          permissions: user.rows[0].permissions,
+        }),
+        300
+      );
+    } catch (_) {
+      // Non-critical cache failure — the DB query succeeded, so proceed
+    }
 
     next();
   } catch (error) {

@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import type { User, LoginPayload, AuthResponse } from "@/types";
-import api from "@/lib/api";
+import api, { setAccessToken } from "@/lib/api";
 import toast from "react-hot-toast";
 
 interface AuthContextValue {
@@ -33,6 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(data.data.user);
     } catch {
       setUser(null);
+      setAccessToken(null);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
     }
@@ -59,6 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { user, accessToken, refreshToken } = data.data;
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
+    setAccessToken(accessToken);
     api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     setUser(user);
   }, []);
@@ -71,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    setAccessToken(null);
     delete api.defaults.headers.common.Authorization;
     setUser(null);
     toast.success("Logged out successfully");

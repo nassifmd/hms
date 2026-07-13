@@ -227,33 +227,33 @@ class PharmacyController {
         req.user.userId
       );
 
-      // Auto-bill dispensed drugs (fire-and-forget)
+      // Auto-bill dispensed drugs in a single batch transaction (eliminates N+1)
       if (
         dispensing.patient_id &&
         req.user.facilityId &&
-        Array.isArray(dispensing.items)
+        Array.isArray(dispensing.items) &&
+        dispensing.items.length > 0
       ) {
-        for (const item of dispensing.items) {
-          Billing.addToPatientInvoice(
-            {
-              facilityId: req.user.facilityId,
-              patientId: dispensing.patient_id,
-              visitId: dispensing.visit_id || null,
-              serviceType: "Drug",
-              serviceId: item.drug_id || null,
-              itemName: item.drug_name || item.name,
-              itemCode: item.drug_code || null,
-              quantity: item.quantity || 1,
-              description: `Dispensed: ${item.drug_name || ""}`,
-            },
-            req.user.userId
-          ).catch((billingErr) => {
-            logger.warn("Auto-billing failed for dispensed drug", {
+        const billingItems = dispensing.items.map((item) => ({
+          facilityId: req.user.facilityId,
+          patientId: dispensing.patient_id,
+          visitId: dispensing.visit_id || null,
+          serviceType: "Drug",
+          serviceId: item.drug_id || null,
+          itemName: item.drug_name || item.name,
+          itemCode: item.drug_code || null,
+          quantity: item.quantity || 1,
+          description: `Dispensed: ${item.drug_name || ""}`,
+        }));
+
+        Billing.batchAddToPatientInvoice(billingItems, req.user.userId).catch(
+          (billingErr) => {
+            logger.warn("Auto-billing failed for dispensed drugs", {
               error: billingErr.message,
-              drugId: item.drug_id,
+              itemCount: billingItems.length,
             });
-          });
-        }
+          }
+        );
       }
 
       // Clear cache

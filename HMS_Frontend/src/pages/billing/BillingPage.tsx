@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Search, AlertCircle, CheckCircle, Eye, Printer, Plus, Trash2,
@@ -15,6 +15,7 @@ import Button from '@/components/ui/Button'
 import { FormField, Input, Select } from '@/components/ui/Form'
 import { formatDate, formatCurrency, statusColor } from '@/lib/utils'
 import { useAuth } from '@/contexts/AuthContext'
+import { useDebounce } from '@/lib/useDebounce'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -79,6 +80,7 @@ export default function BillingPage() {
 
   const [tab, setTab] = useState<Tab>('Pending')
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
   const [payModal, setPayModal] = useState<Invoice | null>(null)
   const [voidModal, setVoidModal] = useState<Invoice | null>(null)
@@ -119,10 +121,10 @@ export default function BillingPage() {
   // ─── Queries ──────────────────────────────────────────────────
 
   const { data: invoiceData, isLoading } = useQuery({
-    queryKey: ['billing', 'invoices', tab, search],
+    queryKey: ['billing', 'invoices', tab, debouncedSearch],
     queryFn: () =>
       api.get('/billing/invoices', {
-        params: { status: tab || undefined, search: search || undefined, limit: 50 },
+        params: { status: tab || undefined, search: debouncedSearch || undefined, limit: 50 },
       }).then((r) => r.data),
     enabled: tab !== 'prices',
   })
@@ -182,7 +184,7 @@ export default function BillingPage() {
       api.get(`/billing/patients/${selectedPatientId}/visit-services`)
         .then((r) => r.data.data as VisitService[]),
     enabled: !!selectedPatientId && addOpen,
-    staleTime: 0,
+    staleTime: 60_000,
   })
 
   // Auto-select all visit services when they load; reset imported tracking on date/patient change
@@ -548,7 +550,7 @@ export default function BillingPage() {
           </div>
 
           <DataTable
-            columns={[
+            columns={useMemo(() => [
               { key: 'invoiceNumber', header: 'Invoice #', render: (r: Invoice) => <span className="font-mono text-xs font-semibold">{r.invoice_number ?? r.invoiceNumber}</span> },
               { key: 'patientName', header: 'Patient', render: (r: Invoice) => (
                 <div>
@@ -558,7 +560,7 @@ export default function BillingPage() {
                   )}
                 </div>
               )},
-              { key: 'totalAmount', header: 'Total', render: (r: Invoice) => <span className="font-semibold">{formatCurrency(r.total_amount ?? r.totalAmount ?? 0)}</span> },
+              { key: 'totalAmount', header: 'Invoice Total', render: (r: Invoice) => <span className="font-semibold">{formatCurrency(r.total_amount ?? r.totalAmount ?? 0)}</span> },
               { key: 'paidAmount', header: 'Paid', render: (r: Invoice) => formatCurrency(r.amount_paid ?? r.paidAmount ?? 0) },
               { key: 'balanceDue', header: 'Balance', render: (r: Invoice) => {
                 const bal = r.balance_due ?? r.balanceDue ?? 0
@@ -600,7 +602,7 @@ export default function BillingPage() {
                   )}
                 </div>
               )},
-            ]}
+            ], [])}
             data={invoices}
             keyField="id"
             isLoading={isLoading}
@@ -1131,7 +1133,7 @@ function InvoiceDetailView({ invoice }: { invoice: Invoice }) {
 
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'Total', value: formatCurrency(total) },
+          { label: 'Invoice Total', value: formatCurrency(total) },
           { label: 'Paid', value: formatCurrency(paid), cls: 'text-green-600' },
           { label: 'Balance', value: formatCurrency(balance), cls: balance > 0 ? 'text-red-600' : 'text-green-600' },
         ].map((s) => (

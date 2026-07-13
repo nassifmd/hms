@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, AlertTriangle, Package, TrendingDown, Clock, Pencil, PackagePlus, History, Scale, Trash2, SlidersHorizontal, FileDown, FileText, ArrowRightLeft, Warehouse, Pill } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
-import * as XLSX from 'xlsx'
 import api from '@/lib/api'
 import type { InventoryItem } from '@/types'
 import PageHeader from '@/components/ui/PageHeader'
@@ -14,6 +11,7 @@ import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
 import { FormField, Input, Select, Textarea } from '@/components/ui/Form'
 import { formatDate, formatCurrency, statusColor } from '@/lib/utils'
+import { useDebounce } from '@/lib/useDebounce'
 
 const itemTypeOptions = [
   { value: 'Medicine', label: 'Medicine' },
@@ -95,6 +93,7 @@ export default function InventoryPage() {
   const qc = useQueryClient()
   const [stockLocation, setStockLocation] = useState<'Store' | 'Pharmacy'>('Store')
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
   const [categoryFilter, setCategoryFilter] = useState('')
   const [addOpen, setAddOpen] = useState(false)
   const [restockItem, setRestockItem] = useState<InventoryItem | null>(null)
@@ -119,6 +118,8 @@ export default function InventoryPage() {
     setExporting('pdf')
     try {
       const rows = await fetchAllForExport()
+      const jsPDF = (await import('jspdf')).default
+      const autoTable = (await import('jspdf-autotable')).default
       const doc = new jsPDF({ orientation: 'landscape' })
       doc.setFontSize(14)
       doc.text('Inventory Stock Report', 14, 15)
@@ -210,6 +211,7 @@ export default function InventoryPage() {
           r.status,
         ]),
       ]
+      const XLSX = await import('xlsx')
       const ws = XLSX.utils.aoa_to_sheet(wsData)
       // Auto column widths
       ws['!cols'] = wsData[0].map((_, ci) => ({
@@ -248,10 +250,10 @@ export default function InventoryPage() {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['inventory', stockLocation, categoryFilter, search, page],
+    queryKey: ['inventory', stockLocation, categoryFilter, debouncedSearch, page],
     queryFn: () =>
       api.get('/inventory/items', {
-        params: { category: categoryFilter || undefined, search: search || undefined, stock_location: stockLocation, page, limit: 20 },
+        params: { category: categoryFilter || undefined, search: debouncedSearch || undefined, stock_location: stockLocation, page, limit: 20 },
       }).then((r) => r.data),
   })
 
@@ -417,7 +419,7 @@ export default function InventoryPage() {
     onError: (err: any) => toast.error(err?.response?.data?.error?.message ?? 'Transfer failed'),
   })
 
-  const columns = [
+  const columns = useMemo(() => [
     { key: 'name', header: 'Item Name', render: (r: InventoryItem) => (
       <div>
         <p className="font-medium">{r.name}</p>
@@ -497,7 +499,7 @@ export default function InventoryPage() {
         </button>
       </div>
     )},
-  ]
+  ], [])
 
   return (
     <div className="space-y-5">

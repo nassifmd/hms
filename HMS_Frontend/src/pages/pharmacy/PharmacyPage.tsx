@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Search,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
+import { useDebounce } from "@/lib/useDebounce";
 import type { Prescription } from "@/types";
 import PageHeader from "@/components/ui/PageHeader";
 import DataTable from "@/components/ui/DataTable";
@@ -46,6 +47,7 @@ interface PharmacyDashboard {
 export default function PharmacyPage() {
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const [statusFilter, setStatusFilter] = useState("Pending");
   const [selectedRx, setSelectedRx] = useState<Prescription | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -68,13 +70,13 @@ export default function PharmacyPage() {
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["prescriptions", statusFilter, search],
+    queryKey: ["prescriptions", statusFilter, debouncedSearch],
     queryFn: () =>
       api
         .get("/clinical/prescriptions/pending", {
           params: {
             status: statusFilter || undefined,
-            search: search || undefined,
+            search: debouncedSearch || undefined,
             limit: 30,
           },
         })
@@ -133,21 +135,21 @@ export default function PharmacyPage() {
 
   const batchDispenseMutation = useMutation({
     mutationFn: async (ids: string[]) => {
-      const results = [];
-      for (const id of ids) {
-        const rx = prescriptions.find((p) => p.id === id);
-        if (!rx) continue;
-        try {
+      const results = await Promise.allSettled(
+        ids.map(async (id) => {
+          const rx = prescriptions.find((p) => p.id === id);
+          if (!rx) throw new Error("Not found");
           await api.post("/pharmacy/dispense", {
             prescription_id: rx.id,
             patient_id: (rx as any).patient_id ?? rx.patientId,
           });
-          results.push({ id, success: true });
-        } catch {
-          results.push({ id, success: false });
-        }
-      }
-      return results;
+          return id;
+        })
+      );
+      return results.map((r) => ({
+        id: r.status === "fulfilled" ? r.value : null,
+        success: r.status === "fulfilled",
+      }));
     },
     onSuccess: (results) => {
       const succeeded = results.filter((r) => r.success).length;
@@ -196,7 +198,7 @@ export default function PharmacyPage() {
 
   // ── Table columns ──────────────────────────────────────────────────
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       key: "_checkbox",
       header: "",
@@ -291,7 +293,7 @@ export default function PharmacyPage() {
         </button>
       ),
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-5">

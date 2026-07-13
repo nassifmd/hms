@@ -202,7 +202,21 @@ class Patient {
 
   static async findByPatientNumber(patientNumber) {
     const result = await db.query(
-      'SELECT * FROM patients WHERE patient_number = $1',
+      `SELECT id, patient_number, ghs_unique_identifier, nhis_number, nhis_expiry_date,
+        title, first_name, middle_name, last_name, date_of_birth, gender,
+        blood_group, genotype, marital_status, occupation, employer_name,
+        employer_address, nationality, region_of_origin, district_of_origin,
+        hometown, tribe, religion, email, phone_number, alternate_phone,
+        address_line1, address_line2, city, district, region, postal_code,
+        digital_address, emergency_contact_name, emergency_contact_phone,
+        emergency_contact_relationship, emergency_contact_address,
+        registration_date, registered_by, patient_photo_url, id_type, id_number,
+        id_issue_date, id_expiry_date, id_document_url, allergies,
+        chronic_conditions, current_medications, surgical_history, family_history,
+        social_history, registration_fee_paid, is_active, patient_status,
+        deceased_date, cause_of_death, last_visit_date, facility_id,
+        created_at, updated_at, created_by, updated_by
+      FROM patients WHERE patient_number = $1`,
       [patientNumber]
     );
     return result.rows[0] ? new Patient(result.rows[0]) : null;
@@ -317,7 +331,22 @@ class Patient {
 
     const result = await db.query(`
       SELECT 
-        p.*,
+        p.id, p.patient_number, p.ghs_unique_identifier, p.nhis_number,
+        p.nhis_expiry_date, p.title, p.first_name, p.middle_name, p.last_name,
+        p.date_of_birth, p.gender, p.blood_group, p.genotype, p.marital_status,
+        p.occupation, p.employer_name, p.employer_address, p.nationality,
+        p.region_of_origin, p.district_of_origin, p.hometown, p.tribe, p.religion,
+        p.email, p.phone_number, p.alternate_phone, p.address_line1, p.address_line2,
+        p.city, p.district, p.region, p.postal_code, p.digital_address,
+        p.emergency_contact_name, p.emergency_contact_phone,
+        p.emergency_contact_relationship, p.emergency_contact_address,
+        p.registration_date, p.registered_by, p.patient_photo_url, p.id_type,
+        p.id_number, p.id_issue_date, p.id_expiry_date, p.id_document_url,
+        p.allergies, p.chronic_conditions, p.current_medications,
+        p.surgical_history, p.family_history, p.social_history,
+        p.registration_fee_paid, p.is_active, p.patient_status,
+        p.deceased_date, p.cause_of_death, p.last_visit_date, p.facility_id,
+        p.created_at, p.updated_at, p.created_by, p.updated_by,
         json_build_object(
           'id', f.id,
           'name', f.facility_name

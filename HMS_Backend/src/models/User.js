@@ -201,9 +201,10 @@ class User {
   }
 
   static async findByEmail(email) {
-    const result = await db.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    const result = await db.query(
+      `SELECT id, employee_id, facility_id, department_id, email, password_hash, user_status, login_attempts, account_locked, first_name, last_name, phone_number, title, roles, permissions, facility, department FROM users WHERE email = $1`,
+      [email]
+    );
     return result.rows[0] ? new User(result.rows[0]) : null;
   }
 

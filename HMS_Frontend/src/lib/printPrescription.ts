@@ -6,8 +6,7 @@
  * hand one page to the patient.
  */
 
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import type { default as jsPDF } from "jspdf";
 import { formatDate } from "./utils";
 
 // ---------------------------------------------------------------------------
@@ -77,12 +76,13 @@ const FOOTER_Y = 285;
 // the next one underneath.
 // ---------------------------------------------------------------------------
 function renderBlock(
-  doc: jsPDF,
+  doc: any,
   rx: PrintPrescriptionData,
   startY: number,
   blockLabel: string, // e.g. "1" or "" for single
   tableFontSize: number,
   isFirst: boolean,
+  autoTable: any,
 ): number {
   const patientName = field<string>(rx, "patientName", "patient_name") ?? "—";
   const patientNumber =
@@ -185,7 +185,9 @@ function renderBlock(
 // ---------------------------------------------------------------------------
 // Public API — single prescription
 // ---------------------------------------------------------------------------
-export function printPrescription(rx: PrintPrescriptionData): void {
+export async function printPrescription(rx: PrintPrescriptionData): Promise<void> {
+  const jsPDF = (await import("jspdf")).default;
+  const autoTable = (await import("jspdf-autotable")).default;
   const doc = new jsPDF();
 
   // Page title
@@ -205,7 +207,7 @@ export function printPrescription(rx: PrintPrescriptionData): void {
   const fontSize =
     items.length > 14 ? Math.max(5, Math.floor(8 * (14 / items.length))) : 8;
 
-  renderBlock(doc, rx, 36, "", fontSize, true);
+  renderBlock(doc, rx, 36, "", fontSize, true, autoTable);
 
   // Footer
   doc.setFontSize(7);
@@ -232,11 +234,13 @@ export function printPrescription(rx: PrintPrescriptionData): void {
 //   │  2  │ Metformin    │ 500mg  │ BID  │ 30d  │ 60  │ RX-002   │
 //   └─────┴──────────────┴────────┴──────┴──────┴─────┴──────────┘
 // ---------------------------------------------------------------------------
-export function printMultiplePrescriptions(
+export async function printMultiplePrescriptions(
   list: PrintPrescriptionData[],
-): void {
+): Promise<void> {
   if (list.length === 0) return;
 
+  const jsPDF = (await import("jspdf")).default;
+  const autoTable = (await import("jspdf-autotable")).default;
   const doc = new jsPDF();
 
   // ── Collect all data ────────────────────────────────────────────
@@ -352,7 +356,7 @@ export function printMultiplePrescriptions(
     const cellPad: any =
       tableFontSize < 7 ? { horizontal: 1.2, vertical: 0.8 } : undefined;
 
-    autoTable(doc, {
+    (autoTable as any)(doc, {
       startY: cursorY + 2,
       head: [["#", "Medication", "Dosage", "Freq", "Dur.", "Qty", "Rx #"]],
       body: tableData,

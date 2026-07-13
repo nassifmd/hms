@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Plus,
@@ -26,6 +26,7 @@ import DataTable from "@/components/ui/DataTable";
 import Modal from "@/components/ui/Modal";
 import { FormField, Input, Select, Textarea } from "@/components/ui/Form";
 import { formatDate, calcAge } from "@/lib/utils";
+import { useDebounce } from "@/lib/useDebounce";
 import { AppointmentForm } from "@/pages/appointments/AppointmentsPage";
 
 const DETAIL_TABS = [
@@ -269,6 +270,7 @@ const COMMON_ALLERGIES = [
 export default function PatientsPage() {
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const [addOpen, setAddOpen] = useState(false);
   const [viewPatient, setViewPatient] = useState<Patient | null>(null);
   const [detailTab, setDetailTab] = useState<DetailTab>("info");
@@ -288,11 +290,11 @@ export default function PatientsPage() {
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["patients", page, search],
+    queryKey: ["patients", page, debouncedSearch],
     queryFn: () =>
       api
         .get("/patients", {
-          params: { page, limit: 20, search: search || undefined },
+          params: { page, limit: 20, search: debouncedSearch || undefined },
         })
         .then((r) => r.data),
   });
@@ -631,7 +633,7 @@ export default function PatientsPage() {
       .catch(() => toast.error("Export failed"));
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       key: "patientNumber",
       header: "Patient No.",
@@ -694,7 +696,7 @@ export default function PatientsPage() {
         </div>
       ),
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-5">

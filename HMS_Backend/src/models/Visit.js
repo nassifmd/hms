@@ -324,7 +324,8 @@ class Visit {
     // allow facilityId to be null (system user) – omit the filter in that case
     let query = `
       SELECT 
-        v.*,
+        v.id, v.visit_number, v.patient_id, v.visit_type, v.check_in_time,
+        v.status, v.triage_priority,
         p.first_name || ' ' || p.last_name as patient_name,
         p.patient_number,
         p.date_of_birth,
@@ -347,6 +348,7 @@ class Visit {
       ORDER BY 
         CASE WHEN v.is_emergency THEN 0 ELSE 1 END,
         v.check_in_time
+      LIMIT 100
     `;
 
     const result = await db.query(query, params);

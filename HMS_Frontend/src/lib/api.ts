@@ -2,6 +2,12 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? "/api/v1";
 
+let cachedToken: string | null = null;
+
+export const setAccessToken = (token: string | null) => {
+  cachedToken = token;
+};
+
 export const api = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
@@ -11,9 +17,8 @@ export const api = axios.create({
 // ── Request interceptor: attach access token ──────────────────
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (cachedToken) {
+      config.headers.Authorization = `Bearer ${cachedToken}`;
     }
     return config;
   },

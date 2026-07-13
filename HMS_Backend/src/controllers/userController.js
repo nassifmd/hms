@@ -214,6 +214,7 @@ class UserController {
 
       // Clear cache
       await redis.del(`user:${id}`);
+      await redis.del(`user_auth:${id}`);
       await redis.clearPattern("users:*");
 
       res.json({
@@ -249,6 +250,7 @@ class UserController {
 
       const updatedUser = await user.update(patch, req.user.userId);
       await redis.del(`user:${id}`);
+      await redis.del(`user_auth:${id}`);
       await redis.clearPattern("users:*");
 
       res.json({
@@ -371,6 +373,7 @@ class UserController {
 
       // Clear cache
       await redis.del(`user:${id}`);
+      await redis.del(`user_auth:${id}`);
       await redis.clearPattern("users:*");
 
       res.json({
@@ -406,6 +409,7 @@ class UserController {
 
       // Clear cache
       await redis.del(`user:${id}`);
+      await redis.del(`user_auth:${id}`);
       await redis.clearPattern("users:*");
 
       res.json({

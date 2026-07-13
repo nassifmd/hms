@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Plus,
@@ -444,7 +444,7 @@ export default function AdminPage() {
   };
   const editForm = useForm<EditUserForm>();
 
-  const userColumns = [
+  const userColumns = useMemo(() => [
     {
       key: "name",
       header: "Name",
@@ -587,7 +587,7 @@ export default function AdminPage() {
         </div>
       ),
     },
-  ];
+  ], []);
 
   interface AuditLog {
     id: string;
@@ -598,7 +598,7 @@ export default function AdminPage() {
     ip_address?: string;
     created_at: string;
   }
-  const auditColumns = [
+  const auditColumns = useMemo(() => [
     {
       key: "user_id",
       header: "User",
@@ -628,7 +628,7 @@ export default function AdminPage() {
       header: "Time",
       render: (r: AuditLog) => timeAgo(r.created_at),
     },
-  ];
+  ], []);
 
   const tabs = [
     { id: "users", label: "Users", icon: <Users className="w-4 h-4" /> },

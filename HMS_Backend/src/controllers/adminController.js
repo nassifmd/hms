@@ -331,6 +331,7 @@ class AdminController {
 
       // Clear user caches
       await redis.clearPattern("user:*");
+      await redis.clearPattern("user_auth:*");
 
       await Audit.logAction(req.user.userId, "ROLE_UPDATED", {
         facility_id: req.user.facilityId,
@@ -377,6 +378,9 @@ class AdminController {
       }
 
       await db.query("DELETE FROM roles WHERE id = $1", [id]);
+
+      // Invalidate auth cache since roles changed
+      await redis.clearPattern("user_auth:*");
 
       await Audit.logAction(req.user.userId, "ROLE_DELETED", {
         facility_id: req.user.facilityId,
@@ -1177,6 +1181,7 @@ class AdminController {
 
       // Clear user cache
       await redis.del(`user:${id}`);
+      await redis.del(`user_auth:${id}`);
       await redis.clearPattern(`users:*`);
 
       res.json({
