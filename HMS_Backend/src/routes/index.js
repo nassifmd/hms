@@ -70,6 +70,11 @@ router.use("/admin", adminRoutes);
 router.use("/modules", moduleRoutes);
 router.use("/branches", branchRoutes);
 
+// Stub notifications endpoint — some browser extensions poll this and log 404 noise
+router.all("/notifications*", (req, res) => {
+  res.json({ success: true, data: { unread_count: 0, notifications: [] } });
+});
+
 // 404 handler for undefined routes
 router.use("*", (req, res) => {
   res.status(404).json({
