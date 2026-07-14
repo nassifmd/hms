@@ -180,6 +180,21 @@ class Dental {
 
   static async createProcedure(procedureData, userId) {
     try {
+      // Guard: prevent creating the same procedure for the same patient/tooth within 5 minutes
+      if (procedureData.patient_id && procedureData.procedure_id) {
+        const recent = await db.query(
+          `SELECT id FROM patient_dental_procedures
+           WHERE patient_id = $1
+             AND procedure_id = $2
+             AND (tooth_number = $3 OR ($3 IS NULL AND tooth_number IS NULL))
+             AND created_at > NOW() - INTERVAL '5 minutes'`,
+          [procedureData.patient_id, procedureData.procedure_id, procedureData.tooth_number || null]
+        );
+        if (recent.rows.length > 0) {
+          throw new Error('This procedure was already added for this patient within the last 5 minutes. Please check before adding again.');
+        }
+      }
+
       // If no chart was specified, link to the patient's most recent chart.
       // If the patient has no chart at all, create a default Adult chart first.
       let chartId = procedureData.dental_chart_id || null;
