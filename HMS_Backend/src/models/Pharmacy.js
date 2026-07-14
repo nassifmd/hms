@@ -25,6 +25,14 @@ class Pharmacy {
   }
 
   // Drug Management
+  static async deleteDrug(id) {
+    const result = await db.query(
+      `DELETE FROM drugs WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return result.rows[0] || null;
+  }
+
   static async createDrug(drugData) {
     const result = await db.query(`
       INSERT INTO drugs (

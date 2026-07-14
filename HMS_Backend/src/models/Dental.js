@@ -59,6 +59,15 @@ class Dental {
     });
   }
 
+  static async deleteChart(id) {
+    // Teeth are cascade-deleted
+    const result = await db.query(
+      `DELETE FROM dental_charts WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return result.rows[0] || null;
+  }
+
   static async findChartById(id) {
     const result = await db.query(`
       SELECT 
@@ -161,6 +170,14 @@ class Dental {
   }
 
   // Dental Procedures
+  static async deleteProcedure(id) {
+    const result = await db.query(
+      `DELETE FROM patient_dental_procedures WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return result.rows[0] || null;
+  }
+
   static async createProcedure(procedureData, userId) {
     try {
       // If no chart was specified, link to the patient's most recent chart.
@@ -550,6 +567,14 @@ class Dental {
   }
 
   // Update overall treatment plan status
+  static async deleteTreatmentPlan(id) {
+    const result = await db.query(
+      `DELETE FROM dental_treatment_plans WHERE id = $1 RETURNING id`,
+      [id]
+    );
+    return result.rows[0] || null;
+  }
+
   static async updateTreatmentPlan(planId, updateData) {
     const result = await db.query(`
       UPDATE dental_treatment_plans

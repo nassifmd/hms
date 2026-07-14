@@ -319,6 +319,18 @@ router.post('/:id/insurance',
  * @desc    Update patient insurance
  * @access  Private
  */
+/**
+ * @route   DELETE /api/v1/patients/:id
+ * @desc    Deactivate a patient (soft delete)
+ * @access  Private (Admin only)
+ */
+router.delete('/:id',
+  authorize('SYS_ADMIN', 'SUPER_ADMIN'),
+  param('id').isUUID(),
+  validate,
+  patientController.deactivatePatient
+);
+
 router.put('/:patientId/insurance/:insuranceId',
   [
     param('patientId').isUUID(),

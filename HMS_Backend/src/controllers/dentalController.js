@@ -146,6 +146,87 @@ class DentalController {
    * @route   POST /api/v1/dental/procedures
    * @access  Private (Dentists, Dental Surgeons)
    */
+  async deleteProcedure(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const procedure = await Dental.deleteProcedure(id);
+
+      if (!procedure) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: "No dental procedure found with that ID. Please check and try again.",
+          },
+        });
+      }
+
+      await redis.clearPattern("dental:procedures:*");
+
+      res.json({
+        success: true,
+        message: "Dental procedure deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteChart(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const chart = await Dental.deleteChart(id);
+
+      if (!chart) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: "No dental chart found with that ID. Please check and try again.",
+          },
+        });
+      }
+
+      await redis.clearPattern("dental:charts:*");
+
+      res.json({
+        success: true,
+        message: "Dental chart deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteTreatmentPlan(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const plan = await Dental.deleteTreatmentPlan(id);
+
+      if (!plan) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: "No treatment plan found with that ID. Please check and try again.",
+          },
+        });
+      }
+
+      await redis.clearPattern("dental:treatment-plans:*");
+
+      res.json({
+        success: true,
+        message: "Treatment plan deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async createProcedure(req, res, next) {
     try {
       const errors = validationResult(req);

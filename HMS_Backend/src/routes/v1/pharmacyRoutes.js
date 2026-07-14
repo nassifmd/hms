@@ -198,6 +198,19 @@ router.get(
 );
 
 /**
+ * @route   DELETE /api/v1/pharmacy/drugs/:id
+ * @desc    Delete a drug
+ * @access  Private (Admin only)
+ */
+router.delete(
+  "/drugs/:id",
+  authorize("SYS_ADMIN", "SUPER_ADMIN"),
+  param("id").isUUID(),
+  validate,
+  pharmacyController.deleteDrug
+);
+
+/**
  * @route   POST /api/v1/pharmacy/inventory
  * @desc    Add inventory batch
  * @access  Private (Pharmacist)

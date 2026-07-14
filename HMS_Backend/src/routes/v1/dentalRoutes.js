@@ -490,4 +490,45 @@ router.get(
   dentalController.getPatientBPE
 );
 
+// ── Admin deletion routes ──
+
+/**
+ * @route   DELETE /api/v1/dental/procedures/:id
+ * @desc    Delete a dental procedure
+ * @access  Private (Admin only)
+ */
+router.delete(
+  "/procedures/:id",
+  authorize("SYS_ADMIN", "SUPER_ADMIN"),
+  param("id").isUUID(),
+  validate,
+  dentalController.deleteProcedure
+);
+
+/**
+ * @route   DELETE /api/v1/dental/charts/:id
+ * @desc    Delete a dental chart (teeth cascade-deleted)
+ * @access  Private (Admin only)
+ */
+router.delete(
+  "/charts/:id",
+  authorize("SYS_ADMIN", "SUPER_ADMIN"),
+  param("id").isUUID(),
+  validate,
+  dentalController.deleteChart
+);
+
+/**
+ * @route   DELETE /api/v1/dental/treatment-plans/:planId
+ * @desc    Delete a dental treatment plan
+ * @access  Private (Admin only)
+ */
+router.delete(
+  "/treatment-plans/:planId",
+  authorize("SYS_ADMIN", "SUPER_ADMIN"),
+  param("planId").isUUID(),
+  validate,
+  dentalController.deleteTreatmentPlan
+);
+
 module.exports = router;

@@ -13,6 +13,35 @@ class PharmacyController {
    * @route   POST /api/v1/pharmacy/drugs
    * @access  Private (Pharmacist, Admin)
    */
+  async deleteDrug(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const drug = await Pharmacy.deleteDrug(id);
+
+      if (!drug) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: "No drug found with that ID. Please check and try again.",
+          },
+        });
+      }
+
+      // Clear cache
+      await redis.del("pharmacy:drugs:catalog");
+      await redis.clearPattern("pharmacy:drugs:*");
+
+      res.json({
+        success: true,
+        message: "Drug deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async createDrug(req, res, next) {
     try {
       const errors = validationResult(req);

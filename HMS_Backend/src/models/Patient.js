@@ -870,6 +870,15 @@ class Patient {
     };
   }
 
+  // ── Admin: Soft-delete (deactivate) a patient ──
+  static async deactivate(id, userId) {
+    const result = await db.query(
+      `UPDATE patients SET status = 'Inactive', updated_at = NOW(), updated_by = $1 WHERE id = $2 RETURNING id`,
+      [userId, id]
+    );
+    return result.rows[0] || null;
+  }
+
   // Static dashboard methods
   static async getDashboardStats(facilityId) {
     const result = await db.query(`
