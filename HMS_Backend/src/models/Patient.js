@@ -870,11 +870,11 @@ class Patient {
     };
   }
 
-  // ── Admin: Soft-delete (deactivate) a patient ──
-  static async deactivate(id, userId) {
+  // ── Admin: Permanently delete a patient ──
+  static async hardDelete(id) {
     const result = await db.query(
-      `UPDATE patients SET patient_status = 'Inactive', updated_at = NOW(), updated_by = $1 WHERE id = $2 RETURNING id`,
-      [userId, id]
+      `DELETE FROM patients WHERE id = $1 RETURNING id`,
+      [id]
     );
     return result.rows[0] || null;
   }

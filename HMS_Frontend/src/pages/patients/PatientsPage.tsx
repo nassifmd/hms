@@ -581,7 +581,7 @@ export default function PatientsPage() {
   const deactivateMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/patients/${id}`),
     onSuccess: () => {
-      toast.success("Patient deactivated successfully");
+      toast.success("Patient deleted permanently");
       qc.invalidateQueries({ queryKey: ["patients"] });
     },
     onError: (err: unknown) => {

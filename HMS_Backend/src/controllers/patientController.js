@@ -977,13 +977,13 @@ class PatientController {
   async deactivatePatient(req, res, next) {
     try {
       const { id } = req.params;
-      const patient = await Patient.deactivate(id, req.user.userId);
+      const patient = await Patient.hardDelete(id);
       if (!patient) {
         return res.status(404).json({ success: false, error: { code: "NOT_FOUND", message: "No patient found with that ID. Please check and try again." } });
       }
       await redis.clearPattern("patients:*");
       await redis.del(`patient:${id}`);
-      res.json({ success: true, message: "Patient deactivated successfully" });
+      res.json({ success: true, message: "Patient deleted permanently" });
     } catch (error) {
       next(error);
     }
