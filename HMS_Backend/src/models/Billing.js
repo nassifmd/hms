@@ -337,8 +337,15 @@ class Billing {
 
       const currentInvoice = invoice.rows[0];
       const currentPaid = parseFloat(currentInvoice.amount_paid) || 0;
-      const newPaid = currentPaid + parseFloat(paymentData.amount);
       const totalAmount = parseFloat(currentInvoice.total_amount);
+      const balanceDue = parseFloat(currentInvoice.balance_due) || 0;
+
+      // Prevent overpayment
+      if (paymentData.amount > balanceDue) {
+        throw new Error('Payment amount exceeds the outstanding balance. Please adjust the amount.');
+      }
+
+      const newPaid = currentPaid + parseFloat(paymentData.amount);
       
       // Determine payment status
       let paymentStatus = currentInvoice.payment_status;
