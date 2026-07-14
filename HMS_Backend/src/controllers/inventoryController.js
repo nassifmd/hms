@@ -189,7 +189,7 @@ class InventoryController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Inventory item not found'
+            message: 'No inventory item found with that ID. Please check and try again.'
           }
         });
       }
@@ -218,7 +218,7 @@ class InventoryController {
           success: false,
           error: {
             code: 'INVALID_SEARCH',
-            message: 'Search query must be at least 2 characters'
+            message: 'Please enter at least 2 characters to search.'
           }
         });
       }
@@ -743,7 +743,7 @@ class InventoryController {
       if (oldResult.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          error: { code: 'NOT_FOUND', message: 'Inventory item not found' }
+          error: { code: 'NOT_FOUND', message: 'No inventory item found with that ID. Please check and try again.' }
         });
       }
 
@@ -1144,7 +1144,7 @@ class InventoryController {
       if (!itemResult.rows.length) {
         return res.status(404).json({
           success: false,
-          error: { code: 'NOT_FOUND', message: 'Inventory item not found' }
+          error: { code: 'NOT_FOUND', message: 'No inventory item found with that ID. Please check and try again.' }
         });
       }
 
@@ -1205,7 +1205,7 @@ class InventoryController {
       if (!itemResult.rows.length) {
         return res.status(404).json({
           success: false,
-          error: { code: 'NOT_FOUND', message: 'Inventory item not found' }
+          error: { code: 'NOT_FOUND', message: 'No inventory item found with that ID. Please check and try again.' }
         });
       }
 

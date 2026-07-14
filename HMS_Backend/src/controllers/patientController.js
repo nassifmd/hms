@@ -204,7 +204,7 @@ class PatientController {
             success: false,
             error: {
               code: "NOT_FOUND",
-              message: "Patient not found",
+              message: "No patient found with that ID. Please check the patient information and try again.",
             },
           });
         }
@@ -215,7 +215,7 @@ class PatientController {
             success: false,
             error: {
               code: "FORBIDDEN",
-              message: "Access denied to this patient",
+              message: "You can only update patients registered at your facility.",
             },
           });
         }
@@ -259,7 +259,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -270,7 +270,7 @@ class PatientController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this patient",
+            message: "You can only update patients registered at your facility.",
           },
         });
       }
@@ -337,7 +337,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -348,7 +348,7 @@ class PatientController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this patient",
+            message: "You can only update patients registered at your facility.",
           },
         });
       }
@@ -378,7 +378,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -389,7 +389,7 @@ class PatientController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this patient",
+            message: "You can only update patients registered at your facility.",
           },
         });
       }
@@ -419,7 +419,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -430,7 +430,7 @@ class PatientController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this patient",
+            message: "You can only update patients registered at your facility.",
           },
         });
       }
@@ -470,7 +470,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -481,7 +481,7 @@ class PatientController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this patient",
+            message: "You can only update patients registered at your facility.",
           },
         });
       }
@@ -517,7 +517,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -559,7 +559,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -594,7 +594,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -629,7 +629,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -674,7 +674,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -709,7 +709,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -745,7 +745,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -777,7 +777,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -809,7 +809,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -841,7 +841,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -873,7 +873,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -904,7 +904,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }
@@ -935,7 +935,7 @@ class PatientController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Patient not found",
+            message: "No patient found with that ID. Please check the patient information and try again.",
           },
         });
       }

@@ -21,7 +21,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "SERVER_SHUTTING_DOWN",
-          message: "Service unavailable – shutting down",
+          message: "The system is currently unavailable. Please try again in a few minutes.",
         },
       });
     }
@@ -34,7 +34,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "UNAUTHORIZED",
-          message: "Access token required",
+          message: "Please log in to access this feature.",
         },
       });
     }
@@ -46,7 +46,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_TOKEN",
-          message: "Token has been invalidated",
+          message: "Your session is no longer valid. Please log in again.",
         },
       });
     }
@@ -152,7 +152,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "USER_NOT_FOUND",
-          message: "User not found or inactive",
+          message: "This account does not exist or is not active. Please contact your administrator.",
         },
       });
     }
@@ -165,7 +165,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "TOKEN_REVOKED",
-          message: "Token has been revoked. Please login again.",
+          message: "Your session was revoked. Please log in again to continue.",
         },
       });
     }
@@ -222,7 +222,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "TOKEN_EXPIRED",
-          message: "Token has expired",
+          message: "Your session has expired. Please log in again.",
         },
       });
     }
@@ -232,7 +232,7 @@ const authenticateToken = async (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_TOKEN",
-          message: "Invalid token",
+          message: "Your session could not be verified. Please log in again.",
         },
       });
     }
@@ -295,7 +295,7 @@ const authorize = (...allowedRoles) => {
         success: false,
         error: {
           code: "UNAUTHORIZED",
-          message: "Authentication required",
+          message: "Please log in to access this feature.",
         },
       });
     }
@@ -317,7 +317,7 @@ const authorize = (...allowedRoles) => {
         success: false,
         error: {
           code: "FORBIDDEN",
-          message: "Insufficient permissions",
+          message: "You do not have permission to perform this action. Please contact your administrator if you need access.",
         },
       });
     }
@@ -337,7 +337,7 @@ const hasPermission = (requiredPermission) => {
         success: false,
         error: {
           code: "UNAUTHORIZED",
-          message: "Authentication required",
+          message: "Please log in to access this feature.",
         },
       });
     }
@@ -373,7 +373,7 @@ const belongsToFacility = (req, res, next) => {
       success: false,
       error: {
         code: "UNAUTHORIZED",
-        message: "Authentication required",
+        message: "Please log in to access this feature.",
       },
     });
   }
@@ -391,7 +391,7 @@ const belongsToFacility = (req, res, next) => {
       success: false,
       error: {
         code: "FORBIDDEN",
-        message: "Access denied to this facility's data",
+        message: "You can only access data for your own facility. Please contact your administrator if you need broader access.",
       },
     });
   }
@@ -408,7 +408,7 @@ const belongsToDepartment = (req, res, next) => {
       success: false,
       error: {
         code: "UNAUTHORIZED",
-        message: "Authentication required",
+        message: "Please log in to access this feature.",
       },
     });
   }
@@ -428,7 +428,7 @@ const belongsToDepartment = (req, res, next) => {
       success: false,
       error: {
         code: "FORBIDDEN",
-        message: "Access denied to this department's data",
+        message: "You can only access data for your own department. Please contact your administrator if you need broader access.",
       },
     });
   }
@@ -446,7 +446,7 @@ const isResourceOwner = (resourceUserIdField = "user_id") => {
         success: false,
         error: {
           code: "UNAUTHORIZED",
-          message: "Authentication required",
+          message: "Please log in to access this feature.",
         },
       });
     }
@@ -463,12 +463,12 @@ const isResourceOwner = (resourceUserIdField = "user_id") => {
         success: false,
         error: {
           code: "FORBIDDEN",
-          message: "Access denied to this resource",
-        },
-      });
-    }
+          message: "You do not have permission to access this record.",
+          },
+        });
+      }
 
-    next();
+      next();
   };
 };
 
@@ -479,7 +479,7 @@ const rateLimiter = (options = {}) => {
   const {
     windowMs = 15 * 60 * 1000, // 15 minutes
     max = 100,
-    message = "Too many requests, please try again later.",
+    message = "You've made too many attempts. Please wait a moment and try again.",
     keyGenerator = (req) => req.user?.userId || req.ip,
   } = options;
 
@@ -555,7 +555,7 @@ const validateApiKey = async (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_API_KEY",
-          message: "Invalid API key",
+          message: "The API key provided is not valid. Please check your credentials and try again.",
         },
       });
     }
@@ -584,7 +584,7 @@ const validateApiKey = async (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_API_SECRET",
-          message: "Invalid API secret",
+          message: "The API secret provided is not valid. Please check your credentials and try again.",
         },
       });
     }

@@ -204,7 +204,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -215,7 +215,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -245,7 +245,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -256,7 +256,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -311,7 +311,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "MISSING_REASON",
-            message: "Cancellation reason is required",
+            message: "Please provide a reason for cancelling the appointment.",
           },
         });
       }
@@ -323,7 +323,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -334,7 +334,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -394,7 +394,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -405,7 +405,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -458,7 +458,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -469,7 +469,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -504,7 +504,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -515,7 +515,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }
@@ -550,7 +550,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "Appointment not found",
+            message: "No appointment found with that ID. Please check and try again.",
           },
         });
       }
@@ -561,7 +561,7 @@ class AppointmentController {
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Access denied to this appointment",
+            message: "You can only access appointments for your own facility.",
           },
         });
       }

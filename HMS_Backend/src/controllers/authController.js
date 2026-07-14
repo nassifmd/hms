@@ -43,7 +43,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_CREDENTIALS",
-            message: "Invalid email/username or password",
+            message: "Incorrect email or password. Please check your credentials and try again.",
           },
         });
       }
@@ -56,7 +56,7 @@ class AuthController {
           error: {
             code: "INACTIVE_ACCOUNT",
             message:
-              "Your account is not active. Please contact administrator.",
+              "Your account is currently inactive. Please contact your administrator for assistance.",
           },
         });
       }
@@ -72,7 +72,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_CREDENTIALS",
-            message: "Invalid email or password",
+            message: "Incorrect email or password. Please check your credentials and try again.",
           },
         });
       }
@@ -134,7 +134,7 @@ class AuthController {
           success: false,
           error: {
             code: "MISSING_TOKEN",
-            message: "Refresh token is required",
+            message: "A session refresh is needed. Please log in again.",
           },
         });
       }
@@ -159,7 +159,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_TOKEN",
-            message: "Refresh token has expired. Please login again.",
+            message: "Your session has expired. Please log in again to continue.",
           },
         });
       }
@@ -178,7 +178,7 @@ class AuthController {
           error: {
             code: "TOKEN_REUSE_DETECTED",
             message:
-              "This refresh token has already been used. Please login again.",
+              "Your session is no longer valid. Please log in again for security purposes.",
           },
         });
       }
@@ -191,7 +191,7 @@ class AuthController {
           success: false,
           error: {
             code: "USER_NOT_FOUND",
-            message: "User not found or inactive",
+            message: "This account does not exist or is not active. Please contact your administrator.",
           },
         });
       }
@@ -224,7 +224,7 @@ class AuthController {
           success: false,
           error: {
             code: "TOKEN_EXPIRED",
-            message: "Refresh token has expired. Please login again.",
+            message: "Your session has expired. Please log in again to continue.",
           },
         });
       }
@@ -240,7 +240,7 @@ class AuthController {
       const userId = req.user.userId;
       await redis.del(`refresh_token_hash:${userId}`);
       await redis.incr(`token_version:${userId}`);
-      res.json({ success: true, message: "All sessions invalidated" });
+      res.json({ success: true, message: "All active sessions have been ended. You will need to log in again on all devices." });
     } catch (error) {
       next(error);
     }
@@ -307,7 +307,7 @@ class AuthController {
           success: false,
           error: {
             code: "USER_NOT_FOUND",
-            message: "User not found",
+            message: "Your account could not be found. Please contact your administrator.",
           },
         });
       }
@@ -320,7 +320,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_PASSWORD",
-            message: "Current password is incorrect",
+            message: "The current password you entered is incorrect. Please try again.",
           },
         });
       }
@@ -474,7 +474,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_TOKEN",
-            message: "Invalid or expired reset token",
+            message: "This password reset link is no longer valid or has expired. Please request a new password reset.",
           },
         });
       }
@@ -524,7 +524,7 @@ class AuthController {
           success: false,
           error: {
             code: "MISSING_CONTACT",
-            message: "Phone or email is required",
+            message: "Please provide a phone number or email address to receive your verification code.",
           },
         });
       }
@@ -551,7 +551,7 @@ class AuthController {
 
       res.json({
         success: true,
-        message: "OTP sent successfully",
+        message: "A verification code has been sent to your phone or email.",
       });
     } catch (error) {
       next(error);
@@ -572,7 +572,7 @@ class AuthController {
           success: false,
           error: {
             code: "MISSING_OTP",
-            message: "OTP is required",
+            message: "Please enter the verification code sent to your phone or email.",
           },
         });
       }
@@ -586,7 +586,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_OTP",
-            message: "Invalid or expired OTP",
+            message: "This verification code is invalid or has expired. Please request a new code.",
           },
         });
       }
@@ -596,7 +596,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_OTP",
-            message: "Invalid OTP",
+            message: "The verification code you entered is incorrect. Please try again.",
           },
         });
       }
@@ -607,7 +607,7 @@ class AuthController {
           success: false,
           error: {
             code: "OTP_EXPIRED",
-            message: "OTP has expired",
+            message: "Your verification code has expired. Please request a new code.",
           },
         });
       }
@@ -625,7 +625,7 @@ class AuthController {
         data: {
           tempToken,
         },
-        message: "OTP verified successfully",
+        message: "Verification successful.",
       });
     } catch (error) {
       next(error);
@@ -646,7 +646,7 @@ class AuthController {
           success: false,
           error: {
             code: "USER_NOT_FOUND",
-            message: "User not found",
+            message: "Your account could not be found. Please contact your administrator.",
           },
         });
       }
@@ -753,7 +753,7 @@ class AuthController {
           success: false,
           error: {
             code: "USER_NOT_FOUND",
-            message: "User not found",
+            message: "Your account could not be found. Please contact your administrator.",
           },
         });
       }
@@ -797,7 +797,7 @@ class AuthController {
           success: false,
           error: {
             code: "SETUP_EXPIRED",
-            message: "2FA setup has expired. Please try again.",
+            message: "Your two-factor setup has expired. Please start the setup process again.",
           },
         });
       }
@@ -810,7 +810,7 @@ class AuthController {
           success: false,
           error: {
             code: "INVALID_TOKEN",
-            message: "Invalid verification token",
+            message: "The verification code you entered is incorrect. Please try again.",
           },
         });
       }

@@ -41,7 +41,7 @@ class BillingController {
     try {
       const { service_type, search } = req.query;
       if (!service_type) {
-        return res.status(400).json({ success: false, error: { code: 'MISSING_PARAM', message: 'service_type is required' } });
+        return res.status(400).json({ success: false, error: { code: 'MISSING_PARAM', message: 'Please select a service type to view available services.' } });
       }
       const items = await Billing.getServiceCatalog(service_type, search || '', req.user.facilityId);
       res.json({ success: true, data: items });
@@ -210,7 +210,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Invoice not found'
+            message: 'No invoice found with that ID. Please check and try again.'
           }
         });
       }
@@ -221,7 +221,7 @@ class BillingController {
           success: false,
           error: {
             code: 'FORBIDDEN',
-            message: 'Access denied to this invoice'
+            message: 'You can only access invoices for your own facility.'
           }
         });
       }
@@ -346,7 +346,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Payment not found'
+            message: 'No payment found with that ID. Please check and try again.'
           }
         });
       }
@@ -376,7 +376,7 @@ class BillingController {
           success: false,
           error: {
             code: 'MISSING_REASON',
-            message: 'Void reason is required'
+            message: 'Please provide a reason for voiding this payment.'
           }
         });
       }
@@ -423,7 +423,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Invoice not found'
+            message: 'No invoice found with that ID. Please check and try again.'
           }
         });
       }
@@ -461,7 +461,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Invoice not found'
+            message: 'No invoice found with that ID. Please check and try again.'
           }
         });
       }
@@ -497,7 +497,7 @@ class BillingController {
           success: false,
           error: {
             code: 'MISSING_INFO',
-            message: 'Discount percentage and reason are required'
+            message: 'Please enter a discount percentage and a reason for the discount.'
           }
         });
       }
@@ -509,7 +509,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Invoice not found'
+            message: 'No invoice found with that ID. Please check and try again.'
           }
         });
       }
@@ -545,7 +545,7 @@ class BillingController {
           success: false,
           error: {
             code: 'MISSING_REASON',
-            message: 'Void reason is required'
+            message: 'Please provide a reason for voiding this payment.'
           }
         });
       }
@@ -557,7 +557,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Invoice not found'
+            message: 'No invoice found with that ID. Please check and try again.'
           }
         });
       }
@@ -565,7 +565,7 @@ class BillingController {
       if (invoice.payment_status === 'Paid') {
         return res.status(409).json({
           success: false,
-          error: { code: 'INVOICE_PAID', message: 'Paid invoices cannot be voided' }
+          error: { code: 'INVOICE_PAID', message: 'This invoice has already been paid and cannot be voided.' }
         });
       }
 
@@ -810,7 +810,7 @@ class BillingController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Payment not found'
+            message: 'No payment found with that ID. Please check and try again.'
           }
         });
       }

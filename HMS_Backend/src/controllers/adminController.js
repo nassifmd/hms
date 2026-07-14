@@ -87,7 +87,7 @@ class AdminController {
           success: false,
           error: {
             code: "INVALID_DATA",
-            message: "Settings array is required",
+            message: "Please provide a valid list of settings to update.",
           },
         });
       }
@@ -105,7 +105,7 @@ class AdminController {
           success: false,
           error: {
             code: "MISSING_TABLE",
-            message: "System settings table is not present in the database",
+            message: "The system settings could not be saved. Please contact your administrator.",
           },
         });
       }
@@ -1001,7 +1001,7 @@ class AdminController {
           success: false,
           error: {
             code: "MISSING_EMAIL",
-            message: "Email address is required",
+            message: "Please enter an email address to send the test to.",
           },
         });
       }
@@ -1037,7 +1037,7 @@ class AdminController {
           success: false,
           error: {
             code: "MISSING_PHONE",
-            message: "Phone number is required",
+            message: "Please enter a phone number to send the test message to.",
           },
         });
       }
@@ -1168,7 +1168,7 @@ class AdminController {
       if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          error: { code: "USER_NOT_FOUND", message: "User not found" },
+          error: { code: "USER_NOT_FOUND", message: "No user found with that ID. Please check and try again." },
         });
       }
 

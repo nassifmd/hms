@@ -23,7 +23,7 @@ const validate = (req, res, next) => {
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Validation failed",
+        message: "Some of the information you entered is incorrect or missing. Please review the highlighted fields and try again.",
         details: errorMessages,
       },
     });
@@ -50,7 +50,7 @@ const validateUUID = (req, res, next) => {
           success: false,
           error: {
             code: "INVALID_UUID",
-            message: `Invalid UUID format for parameter: ${key}`,
+            message: "The ID you provided is not valid. Please check that you've selected a valid record and try again.",
           },
         });
       }
@@ -73,7 +73,7 @@ const validatePagination = (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_PAGE",
-          message: "Page must be a positive number",
+          message: "Page number must be 1 or higher.",
         },
       });
     }
@@ -101,7 +101,7 @@ const validatePagination = (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_OFFSET",
-          message: "Offset must be a non-negative number",
+          message: "The starting position must be 0 or higher.",
         },
       });
     }
@@ -123,7 +123,7 @@ const validateDateRange = (req, res, next) => {
         success: false,
         error: {
           code: "INVALID_DATE",
-          message: `Invalid date format for ${name}`,
+          message: "The date you entered is not in a valid format. Please use a valid date.",
         },
       });
     }
@@ -140,7 +140,7 @@ const validateDateRange = (req, res, next) => {
       success: false,
       error: {
         code: "INVALID_RANGE",
-        message: "Start date must be before end date",
+        message: "The start date must be earlier than the end date.",
       },
     });
   }
@@ -150,7 +150,7 @@ const validateDateRange = (req, res, next) => {
       success: false,
       error: {
         code: "INVALID_RANGE",
-        message: "From date must be before to date",
+        message: "The from date must be earlier than the to date.",
       },
     });
   }
@@ -180,7 +180,7 @@ const validateRequired = (fields) => {
         success: false,
         error: {
           code: "MISSING_FIELDS",
-          message: "Required fields missing",
+          message: "Please complete all required fields before continuing.",
           details: missing,
         },
       });
@@ -296,7 +296,7 @@ const validateContentType = (req, res, next) => {
         success: false,
         error: {
           code: "UNSUPPORTED_MEDIA_TYPE",
-          message: "Content-Type must be application/json",
+          message: "The request format is not supported. Please ensure you're using a compatible client.",
         },
       });
     }

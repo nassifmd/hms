@@ -161,7 +161,7 @@ class UserController {
             success: false,
             error: {
               code: "NOT_FOUND",
-              message: "User not found",
+              message: "No user found with that ID. Please check and try again.",
             },
           });
         }
@@ -205,7 +205,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }
@@ -239,7 +239,7 @@ class UserController {
       if (!user) {
         return res.status(404).json({
           success: false,
-          error: { code: "NOT_FOUND", message: "User not found" },
+          error: { code: "NOT_FOUND", message: "No user found with that ID. Please check and try again." },
         });
       }
 
@@ -278,7 +278,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }
@@ -322,7 +322,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }
@@ -353,7 +353,7 @@ class UserController {
           success: false,
           error: {
             code: "MISSING_ROLE",
-            message: "Role ID is required",
+            message: "Please select a role to assign.",
           },
         });
       }
@@ -364,7 +364,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }
@@ -400,7 +400,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }
@@ -436,7 +436,7 @@ class UserController {
           success: false,
           error: {
             code: "NOT_FOUND",
-            message: "User not found",
+            message: "No user found with that ID. Please check and try again.",
           },
         });
       }

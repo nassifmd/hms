@@ -109,7 +109,7 @@ class ClinicalController {
         if (cachedVisit.facility_id !== req.user.facilityId) {
           return res.status(403).json({
             success: false,
-            error: { code: 'FORBIDDEN', message: 'Access denied to this visit' }
+            error: { code: 'FORBIDDEN', message: 'You can only access visits for your own facility.' }
           });
         }
         return res.json({ success: true, data: cachedVisit });
@@ -122,7 +122,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -133,7 +133,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'FORBIDDEN',
-            message: 'Access denied to this visit'
+            message: 'You can only access visits for your own facility.'
           }
         });
       }
@@ -167,7 +167,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -178,7 +178,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'FORBIDDEN',
-            message: 'Access denied to this visit'
+            message: 'You can only access visits for your own facility.'
           }
         });
       }
@@ -227,7 +227,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -238,7 +238,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'FORBIDDEN',
-            message: 'Access denied to this visit'
+            message: 'You can only access visits for your own facility.'
           }
         });
       }
@@ -285,7 +285,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -296,7 +296,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'FORBIDDEN',
-            message: 'Access denied to this visit'
+            message: 'You can only access visits for your own facility.'
           }
         });
       }
@@ -334,7 +334,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -790,7 +790,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'MISSING_NOTES',
-            message: 'Discharge notes are required'
+            message: 'Please provide discharge notes before completing the discharge.'
           }
         });
       }
@@ -802,7 +802,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -838,7 +838,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'MISSING_INFO',
-            message: 'Department ID and reason are required'
+            message: 'Please select a department and provide a reason for the transfer.'
           }
         });
       }
@@ -850,7 +850,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }
@@ -886,7 +886,7 @@ class ClinicalController {
           success: false,
           error: {
             code: 'NOT_FOUND',
-            message: 'Visit not found'
+            message: 'No visit found with that ID. Please check and try again.'
           }
         });
       }

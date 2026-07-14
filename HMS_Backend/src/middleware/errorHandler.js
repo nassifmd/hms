@@ -83,7 +83,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.code === "23505") {
     const field = err.detail?.match(/Key \((.*?)\)=/)?.[1] || "field";
     error = new AppError(
-      `Duplicate entry: ${field} already exists`,
+      `A record with that ${field} already exists. Please use a different value.`,
       409,
       "DUPLICATE_ENTRY"
     );
@@ -92,7 +92,7 @@ const errorHandler = (err, req, res, next) => {
   // PostgreSQL foreign key violation
   if (err.code === "23503") {
     error = new AppError(
-      "Referenced record not found",
+      "The related record this action depends on could not be found. Please ensure the linked item exists and try again.",
       404,
       "REFERENCE_NOT_FOUND"
     );
@@ -101,34 +101,62 @@ const errorHandler = (err, req, res, next) => {
   // PostgreSQL not null violation
   if (err.code === "23502") {
     const field = err.column || "field";
-    error = new AppError(`${field} is required`, 400, "REQUIRED_FIELD");
+    error = new AppError(
+      "A required value is missing. Please complete all required fields and try again.",
+      400,
+      "REQUIRED_FIELD"
+    );
   }
 
   // PostgreSQL invalid input syntax
   if (err.code === "22P02") {
-    error = new AppError("Invalid input format", 400, "INVALID_INPUT");
+    error = new AppError(
+      "The information you entered is not in the correct format. Please check your input and try again.",
+      400,
+      "INVALID_INPUT"
+    );
   }
 
   // JWT errors
   if (err.name === "JsonWebTokenError") {
-    error = new AppError("Invalid token", 401, "INVALID_TOKEN");
+    error = new AppError(
+      "Your session could not be verified. Please log in again to continue.",
+      401,
+      "INVALID_TOKEN"
+    );
   }
 
   if (err.name === "TokenExpiredError") {
-    error = new AppError("Token expired", 401, "TOKEN_EXPIRED");
+    error = new AppError(
+      "Your session has expired. Please log in again to continue.",
+      401,
+      "TOKEN_EXPIRED"
+    );
   }
 
   // Multer errors (file upload)
   if (err.code === "LIMIT_FILE_SIZE") {
-    error = new AppError("File too large", 400, "FILE_TOO_LARGE");
+    error = new AppError(
+      "The file you uploaded is too large. Please choose a smaller file and try again.",
+      400,
+      "FILE_TOO_LARGE"
+    );
   }
 
   if (err.code === "LIMIT_FILE_COUNT") {
-    error = new AppError("Too many files", 400, "TOO_MANY_FILES");
+    error = new AppError(
+      "You uploaded too many files. Please upload fewer files at once and try again.",
+      400,
+      "TOO_MANY_FILES"
+    );
   }
 
   if (err.code === "LIMIT_UNEXPECTED_FILE") {
-    error = new AppError("Unexpected file field", 400, "UNEXPECTED_FILE");
+    error = new AppError(
+      "The file you uploaded does not match the expected type. Please check the file and try again.",
+      400,
+      "UNEXPECTED_FILE"
+    );
   }
 
   // Validation errors
@@ -154,7 +182,7 @@ const errorHandler = (err, req, res, next) => {
  */
 const notFound = (req, res, next) => {
   const error = new AppError(
-    `Cannot ${req.method} ${req.originalUrl}`,
+    "The page or resource you requested was not found. Please check the address and try again.",
     404,
     "NOT_FOUND"
   );
