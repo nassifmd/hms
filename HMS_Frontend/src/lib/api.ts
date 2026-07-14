@@ -2,7 +2,8 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? "/api/v1";
 
-let cachedToken: string | null = null;
+// Initialise from localStorage so the interceptor has the token on page load
+let cachedToken: string | null = localStorage.getItem("accessToken");
 
 export const setAccessToken = (token: string | null) => {
   cachedToken = token;
