@@ -84,6 +84,20 @@ class PatientController {
         ),
       };
 
+      // Guard: reject duplicate phone_number to prevent double registration
+      if (patientData.phone_number) {
+        const existingByPhone = await Patient.findByPhone(patientData.phone_number);
+        if (existingByPhone) {
+          return res.status(409).json({
+            success: false,
+            error: {
+              code: 'DUPLICATE_PHONE',
+              message: `A patient with phone number ${patientData.phone_number} already exists (${existingByPhone.patient_number})`
+            }
+          });
+        }
+      }
+
       const patient = await Patient.create(
         patientData,
         req.user.userId,
