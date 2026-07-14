@@ -159,7 +159,7 @@ router.patch('/:id',
  * @access  Private (Admin only)
  */
 router.delete('/:id',
-  authorize('SYS_ADMIN'),
+  authorize('SYS_ADMIN', 'SUPER_ADMIN'),
   hasPermission('DELETE_USER'),
   param('id').isUUID(),
   validate,
