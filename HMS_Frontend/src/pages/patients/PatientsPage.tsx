@@ -6,6 +6,7 @@ import {
   Download,
   Eye,
   Pencil,
+  Trash2,
   Phone,
   Hash,
   CalendarPlus,
@@ -28,6 +29,7 @@ import { FormField, Input, Select, Textarea } from "@/components/ui/Form";
 import { formatDate, calcAge } from "@/lib/utils";
 import { useDebounce } from "@/lib/useDebounce";
 import { AppointmentForm } from "@/pages/appointments/AppointmentsPage";
+import { useAuth } from "@/contexts/AuthContext";
 
 const DETAIL_TABS = [
   { key: "info" as const, label: "Info", Icon: FileText },
@@ -269,6 +271,10 @@ const COMMON_ALLERGIES = [
 
 export default function PatientsPage() {
   const qc = useQueryClient();
+  const { user } = useAuth();
+  const canDelete = user?.roles?.some(
+    (r) => r.code === "SYS_ADMIN" || r.code === "SUPER_ADMIN"
+  );
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const [addOpen, setAddOpen] = useState(false);
@@ -572,6 +578,20 @@ export default function PatientsPage() {
     },
   });
 
+  const deactivateMutation = useMutation({
+    mutationFn: (id: string) => api.delete(`/patients/${id}`),
+    onSuccess: () => {
+      toast.success("Patient deactivated successfully");
+      qc.invalidateQueries({ queryKey: ["patients"] });
+    },
+    onError: (err: unknown) => {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message ?? "Failed to deactivate patient";
+      toast.error(msg);
+    },
+  });
+
   const openEdit = (patient: Patient) => {
     editForm.reset({
       title: patient.title,
@@ -693,10 +713,23 @@ export default function PatientsPage() {
           >
             <Pencil className="w-4 h-4" />
           </button>
+          {canDelete && (
+            <button
+              onClick={() => {
+                if (window.confirm(`Deactivate patient ${r.firstName} ${r.lastName}?`)) {
+                  deactivateMutation.mutate(r.id);
+                }
+              }}
+              className="p-1.5 rounded-lg hover:bg-red-50 text-red-400 hover:text-red-600"
+              title="Deactivate patient"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
       ),
     },
-  ], []);
+  ], [canDelete]);
 
   return (
     <div className="space-y-5">
