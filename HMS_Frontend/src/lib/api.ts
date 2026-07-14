@@ -45,6 +45,12 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
+    // Don't intercept login 401 — that means wrong credentials, not expired session
+    const isAuthEndpoint = originalRequest.url?.includes('/auth/');
+    if (isAuthEndpoint) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -72,7 +78,9 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (err) {
         processQueue(err, null);
-        localStorage.clear();
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        setAccessToken(null);
         // Only redirect if not already on the login page to avoid reload loop
         if (!window.location.pathname.startsWith("/login")) {
           window.location.href = "/login";
